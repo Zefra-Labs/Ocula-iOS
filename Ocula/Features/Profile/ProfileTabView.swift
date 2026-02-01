@@ -16,10 +16,10 @@ struct ProfileView: View {
     @State private var userName: String = "Anonymous29211"
     @State private var userImageURL: String?
 
-    @State private var tripsTaken = 245
+    @State private var tripsTaken = 246
     @State private var kmsDriven = 88
     @State private var uniqueRoutes = 444
-    @State private var safetyScore = 20
+    @State private var safetyScore = 60
 
     private let db = Firestore.firestore()
 
@@ -31,9 +31,7 @@ struct ProfileView: View {
 
             profileNavBar
 
-            driveStats
-
-            actionsSection
+            scrollViewSection
             
             HStack(alignment: .center, spacing: AppTheme.Spacing.sm) {
                 Text("Your Stats")
@@ -56,21 +54,34 @@ struct ProfileView: View {
 }
 private extension ProfileView {
 
-    var actionsSection: some View {
+    var scrollViewSection: some View {
         ScrollView {
+            driveStats
+                .padding(.bottom, AppTheme.Spacing.sm)
             VStack(spacing: 12) {
                 actionRow(
                     icon: safetyIcon(for: safetyScore),
                     iconColor: safetyColor(for: safetyScore),
-                    title: "Driver Score ᴮᴱᵀᴬ",
+                    title: "Driver Scoreᴮᴱᵀᴬ",
                     subtitle: safetySubtitle(for: safetyScore),
                     trailingValue: "\(safetyScore)",
                     action: {
                         print("Safety Score tapped")
                     }
                 )
+                actionRow(
+                    icon: "rosette",
+                    iconColor: .yellow,
+                    title: "Leaderboard",
+                    subtitle: "Country Ranking",
+                    trailingValue: "32,312th",
+                    action: {
+                        print("Safety Score tapped")
+                    }
+                )
 
                 Spacer(minLength: 80)
+                
             }
         }
     }

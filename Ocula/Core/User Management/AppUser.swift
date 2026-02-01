@@ -5,3 +5,14 @@
 //  Created by Tyson Miles on 1/2/2026.
 //
 
+import Foundation
+
+struct AppUser: Identifiable, Codable {
+    let id: String
+    let email: String
+    let displayName: String
+    let createdAt: Date
+    let lastLogin: Date
+    let accountType: String
+    let onboardingComplete: Bool
+}

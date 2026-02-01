@@ -1,3 +1,13 @@
+//
+//  LoginView.swift
+//  Ocula
+//
+//  Created by Tyson Miles on 1/2/2026.
+//
+import SwiftUI
+import FirebaseCore
+import Firebase
+import FirebaseAuth
 struct LoginView: View {
 
     @State private var email = ""

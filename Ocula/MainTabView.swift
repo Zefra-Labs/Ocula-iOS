@@ -1,3 +1,10 @@
+//
+//  MainTabView.swift
+//  Ocula
+//
+//  Created by Tyson Miles on 26/1/2026.
+//
+
 import SwiftUI
 
 struct MainTabView: View {
@@ -10,14 +17,14 @@ struct MainTabView: View {
                     Image(systemName: "house.fill")
                 }
 
-            GalleryView()
+            ClipsView()
                 .tabItem {
-                    Image(systemName: "photo.on.rectangle")
+                    Image(systemName: "folder.fill")
                 }
 
             TripsView()
                 .tabItem {
-                    Image(systemName: "map")
+                    Image(systemName: "point.topleft.filled.down.to.point.bottomright.curvepath")
                 }
 
             ProfileView()

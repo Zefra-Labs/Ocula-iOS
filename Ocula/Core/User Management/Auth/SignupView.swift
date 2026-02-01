@@ -1,3 +1,14 @@
+//
+//  SignupView.swift
+//  Ocula
+//
+//  Created by Tyson Miles on 1/2/2026.
+//
+import SwiftUI
+import FirebaseAuth
+import Firebase
+import FirebaseFirestore
+
 struct SignupView: View {
 
     @State private var email = ""

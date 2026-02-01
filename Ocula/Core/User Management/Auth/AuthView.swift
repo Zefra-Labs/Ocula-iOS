@@ -4,7 +4,7 @@
 //
 //  Created by Tyson Miles on 1/2/2026.
 //
-
+import SwiftUI
 
 struct AuthView: View {
 
@@ -28,7 +28,12 @@ struct AuthView: View {
             Button(showSignup ? "Already have an account?" : "Create an account") {
                 showSignup.toggle()
             }
+            .buttonStyle(PrimaryButtonStyle())
+            
         }
         .padding()
     }
+}
+#Preview {
+    AuthView()
 }

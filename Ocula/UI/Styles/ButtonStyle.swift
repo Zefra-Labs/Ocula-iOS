@@ -15,8 +15,9 @@ struct PrimaryButtonStyle: ButtonStyle {
             .foregroundColor(.white)
             .padding()
             .frame(maxWidth: .infinity)
+            .frame(height: 50)
             .background(AppTheme.Colors.accent)
-            .cornerRadius(AppTheme.Radius.md)
+            .cornerRadius(25)
             .opacity(configuration.isPressed ? 0.85 : 1)
     }
 }

@@ -1,3 +1,11 @@
+//
+//  SessionManager.swift
+//  Ocula
+//
+//  Created by Tyson Miles on 1/2/2026.
+//
+
+
 import FirebaseAuth
 import FirebaseFirestore
 import Combine

@@ -1,3 +1,14 @@
+//
+//  RootView.swift
+//  Ocula
+//
+//  Created by Tyson Miles on 1/2/2026.
+//
+import SwiftUI
+import FirebaseCore
+import Firebase
+import FirebaseAuth
+
 struct RootView: View {
 
     @StateObject private var session = SessionManager()
@@ -6,10 +17,10 @@ struct RootView: View {
         Group {
             if session.isLoading {
                 ProgressView()
-            } else if session.user == nil {
-                AuthView()
+           // } //else if session.user == nil {
+               // AuthView()
             } else {
-                MainAppView()
+                MainTabView()
             }
         }
         .environmentObject(session)

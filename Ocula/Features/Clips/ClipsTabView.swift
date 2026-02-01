@@ -1,5 +1,5 @@
 //
-//  GalleryTabView.swift
+//  ClipsTabView.swift
 //  Ocula
 //
 //  Created by Tyson Miles on 26/1/2026.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct ClipsTabView: View {
+struct ClipsView: View {
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
@@ -16,4 +16,8 @@ struct ClipsTabView: View {
                 .foregroundColor(.white)
         }
     }
+}
+
+#Preview {
+    ClipsView()
 }
