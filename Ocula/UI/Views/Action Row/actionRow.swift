@@ -48,9 +48,8 @@ func actionRow(
             .foregroundColor(AppTheme.Colors.secondary)
     }
         .padding(AppTheme.Spacing.md)
-        .background(
+        .glassEffect(in:
             RoundedRectangle(cornerRadius: AppTheme.Radius.xlg)
-                .fill(AppTheme.Colors.primary.opacity(0.1))
         )
         .contentShape(Rectangle())
     

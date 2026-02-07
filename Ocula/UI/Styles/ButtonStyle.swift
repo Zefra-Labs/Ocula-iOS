@@ -21,3 +21,17 @@ struct PrimaryButtonStyle: ButtonStyle {
             .opacity(configuration.isPressed ? 0.85 : 1)
     }
 }
+struct SecondaryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(AppTheme.Fonts.medium(16))
+            .foregroundColor(.white)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(AppTheme.Colors.secondary)
+            .cornerRadius(25)
+            .opacity(configuration.isPressed ? 0.85 : 1)
+    }
+}
+

@@ -13,32 +13,43 @@ struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var error: String?
+    @State private var isLoggedIn = false
 
     var body: some View {
-        VStack(spacing: 16) {
-            TextField("Email", text: $email)
-                .textInputAutocapitalization(.never)
-                .keyboardType(.emailAddress)
-                .textFieldStyle(.roundedBorder)
+        NavigationStack {
+            VStack(spacing: 16) {
+                TextField("Email", text: $email)
+                    .textInputAutocapitalization(.never)
+                    .keyboardType(.emailAddress)
+                    .textFieldStyle(.roundedBorder)
 
-            SecureField("Password", text: $password)
-                .textFieldStyle(.roundedBorder)
+                SecureField("Password", text: $password)
+                    .textFieldStyle(.roundedBorder)
 
-            if let error {
-                Text(error).foregroundColor(.red)
+                if let error {
+                    Text(error).foregroundColor(.red)
+                }
+
+                Button("Sign In") {
+                    login()
+                }
+                .buttonStyle(.borderedProminent)
             }
-
-            Button("Sign In") {
-                login()
+            .fullScreenCover(isPresented: $isLoggedIn) {
+                MainTabView()
             }
-            .buttonStyle(.borderedProminent)
         }
     }
 
     private func login() {
         Auth.auth().signIn(withEmail: email, password: password) { _, error in
             if let error {
+                print("At error stage")
                 self.error = error.localizedDescription
+            }
+            else {
+                print("At LoggedIN stage")
+                self.isLoggedIn = true
             }
         }
     }

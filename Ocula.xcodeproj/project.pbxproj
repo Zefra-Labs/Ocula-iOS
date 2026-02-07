@@ -42,14 +42,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		8B8386632F279FAF007F82CD /* Exceptions for "Ocula" folder in "OculaTests" target */ = {
+		8BD4B4182F3144B9004C9FA4 /* Exceptions for "Ocula" folder in "OculaTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"GoogleService-Info.plist",
 			);
 			target = 8B91636E2F23A12500D3A6D6 /* OculaTests */;
 		};
-		8B8386642F279FAF007F82CD /* Exceptions for "Ocula" folder in "OculaUITests" target */ = {
+		8BD4B4192F3144B9004C9FA4 /* Exceptions for "Ocula" folder in "OculaUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"GoogleService-Info.plist",
@@ -62,8 +62,8 @@
 		8B9163642F23A12300D3A6D6 /* Ocula */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				8B8386632F279FAF007F82CD /* Exceptions for "Ocula" folder in "OculaTests" target */,
-				8B8386642F279FAF007F82CD /* Exceptions for "Ocula" folder in "OculaUITests" target */,
+				8BD4B4182F3144B9004C9FA4 /* Exceptions for "Ocula" folder in "OculaTests" target */,
+				8BD4B4192F3144B9004C9FA4 /* Exceptions for "Ocula" folder in "OculaUITests" target */,
 			);
 			path = Ocula;
 			sourceTree = "<group>";
@@ -454,10 +454,9 @@
 				DEVELOPMENT_TEAM = KCFUNZU449;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Ocula/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Ocula;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Ocula Needs Bluetooth to connect to devices.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
@@ -469,8 +468,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.zefralabs.Ocula;
+				MARKETING_VERSION = 1.1.0.a;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zefralabs.ocula;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -496,10 +495,9 @@
 				DEVELOPMENT_TEAM = KCFUNZU449;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Ocula/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Ocula;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Ocula Needs Bluetooth to connect to devices.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
@@ -511,8 +509,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.zefralabs.Ocula;
+				MARKETING_VERSION = 1.1.0.a;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zefralabs.ocula;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

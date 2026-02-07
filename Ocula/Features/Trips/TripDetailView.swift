@@ -18,7 +18,7 @@ struct TripDetailView: View {
 
                 // MARK: - Map Header
                 TripMapHeader(trip: trip)
-                    .frame(minHeight: 350, maxHeight: 450)
+                    .frame(height: 350)
 
                 // MARK: - Content
                 VStack(spacing: 24) {
@@ -28,11 +28,8 @@ struct TripDetailView: View {
                     safetyScoreSection
                 }
                 .padding()
-                .padding(.top, 20)
-                .background(
-                    RoundedRectangle(cornerRadius: AppTheme.Radius.xxlg, style: .continuous)
-                        .fill(.thinMaterial)
-                )
+                .padding(.top, 15)
+                .glassEffect(in: RoundedRectangle(cornerRadius: AppTheme.Radius.xxlg, style: .continuous))
                 .offset(y: -28)
             }
         }
@@ -47,86 +44,6 @@ struct TripDetailView: View {
             }
         }
     }
-    //
-    struct TripMapHeader: View {
-        
-        let trip: Trip
-        @State private var cameraPosition: MapCameraPosition = .automatic
-        
-        var body: some View {
-            Map(position: $cameraPosition, interactionModes: []) {
-                MapPolyline(coordinates: trip.route)
-                    .stroke(.black, lineWidth: 3)
-
-                // START MARKER
-                if let start = trip.route.first {
-                    Annotation("", coordinate: start) {
-                        Circle()
-                            .fill(.white)
-                            .frame(width: 10, height: 10)
-                            .overlay(
-                                Circle()
-                                    .stroke(.black, lineWidth: 3)
-                            )
-                            .shadow(radius: 1)
-                    }
-                }
-
-                // END MARKER
-                if let end = trip.route.last {
-                    Annotation("", coordinate: end) {
-                        RoundedRectangle(cornerRadius: 2)
-                            .fill(.white)
-                            .frame(width: 10, height: 10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 2)
-                                    .stroke(.black, lineWidth: 3)
-                            )
-                            .shadow(radius: 1)
-                    }
-                }
-            }
-            .onAppear {
-                fitRoute()
-            }
-        }
-
-        
-        private func fitRoute() {
-            guard !trip.route.isEmpty else { return }
-            
-            let coordinates = trip.route
-            
-            let latitudes = coordinates.map { $0.latitude }
-            let longitudes = coordinates.map { $0.longitude }
-            
-            let minLat = latitudes.min()!
-            let maxLat = latitudes.max()!
-            let minLon = longitudes.min()!
-            let maxLon = longitudes.max()!
-            
-            let latitudeDelta = (maxLat - minLat) * 2.5
-            let longitudeDelta = (maxLon - minLon) * 2.5
-            
-            // Move the center DOWN by 15% of the visible latitude
-            let verticalOffset = latitudeDelta * -0.1
-            
-            let center = CLLocationCoordinate2D(
-                latitude: ((minLat + maxLat) / 2) - verticalOffset,
-                longitude: (minLon + maxLon) / 2
-            )
-            
-            let span = MKCoordinateSpan(
-                latitudeDelta: latitudeDelta,
-                longitudeDelta: longitudeDelta
-            )
-            
-            let region = MKCoordinateRegion(center: center, span: span)
-            cameraPosition = .region(region)
-        }
-    }
-
-
     // MARK: - Header
     private var header: some View {
         VStack(alignment: .center, spacing: 6) {
@@ -138,21 +55,12 @@ struct TripDetailView: View {
         }
     }
 
-    // MARK: - Incidents
+    // MARK: - Incidents section with scroll hint chevron
     private var incidentsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Incidents")
-                .font(.headline)
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: AppTheme.Radius.lg) {
-                    IncidentCard(title: "Hard Braking", count: trip.hardBraking, icon: "exclamationmark.triangle")
-                    IncidentCard(title: "Acceleration", count: trip.hardAcceleration, icon: "speedometer")
-                    IncidentCard(title: "Sharp Turns", count: trip.sharpTurns, icon: "arrow.triangle.turn.up.right.circle")
-                }
-            }
-        }
+        IncidentsSection(trip: trip)
     }
+
+
 
     // MARK: - Clips
     private var clipsSection: some View {
@@ -194,62 +102,6 @@ struct TripDetailView: View {
         }
     }
 }
-
-
-struct IncidentCard: View {
-    let title: String
-    let count: Int
-    let icon: String
-
-    var body: some View {
-        HStack {
-            Circle()
-                .fill(count > 0 ? .orange : .green)
-                .frame(width: 36, height: 36)
-                .overlay(
-                    Image(systemName: icon)
-                        .fontWeight(.bold)
-                )
-
-            VStack(alignment: .leading) {
-                Text(title)
-                Text(count > 0 ? "\(count) detected" : "None detected")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: AppTheme.Radius.xlg))
-    }
-}
-struct SafetyGauge: View {
-    let title: String
-    let value: Int
-
-    var normalized: Double {
-        min(Double(value) / 10.0, 1.0)
-    }
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(title)
-                .font(.subheadline)
-
-            Gauge(value: normalized) { }
-                .gaugeStyle(.accessoryLinear)
-                .tint(normalized > 0.6 ? .red : normalized > 0.3 ? .orange : .green)
-
-            Text("\(value) incidents")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-        }
-    }
-}
-extension Date {
-    func relativeFormatted() -> String {
-        let calendar = Calendar.current
-        if calendar.isDateInToday(self) { return formatted(date: .omitted, time: .shortened) }
-        if calendar.isDateInYesterday(self) { return "Yesterday" }
-        return formatted(.dateTime.weekday(.wide))
-    }
+#Preview {
+    TripDetailView(trip: .mockTrips().first!)
 }

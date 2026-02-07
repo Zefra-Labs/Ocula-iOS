@@ -14,15 +14,20 @@ struct RootView: View {
     @StateObject private var session = SessionManager()
 
     var body: some View {
-        Group {
-            if session.isLoading {
-                ProgressView()
-           // } //else if session.user == nil {
-               // AuthView()
-            } else {
-                MainTabView()
-            }
-        }
-        .environmentObject(session)
+        MainTabView()
+            .environmentObject(session)
     }
+
+    //var body: some View {
+      //  Group {
+      //      if session.isLoading {
+      //         RotatingLoadingView()
+       //     } else if session.user == nil {
+       //         AuthView()
+       //     } else {
+       //         MainTabView()
+        //    }
+        //}
+        //.environmentObject(session)
+   // }
 }

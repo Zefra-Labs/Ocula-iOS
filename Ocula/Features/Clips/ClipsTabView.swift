@@ -10,15 +10,7 @@ import SwiftUI
 
 struct ClipsView: View {
     var body: some View {
-        navigationTitle("All Clips")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { print("Pressed") } label: {
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                }
-            }
+        Text("Clips")
         }
     }
 
