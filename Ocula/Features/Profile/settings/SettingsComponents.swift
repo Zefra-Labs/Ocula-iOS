@@ -81,6 +81,6 @@ struct SettingsSectionHeader: View {
 #Preview {
     SettingsScaffold(title: "Preview") {
         Text("Preview Content")
-            .foregroundColor(.white)
+            .foregroundColor(AppTheme.Colors.primary)
     }
 }

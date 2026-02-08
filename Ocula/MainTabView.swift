@@ -10,8 +10,8 @@ import UIKit
 
 struct MainTabView: View {
     init() {
-        UITabBar.appearance().unselectedItemTintColor = UIColor.secondary
-        UITabBar.appearance().tintColor = UIColor.primary
+        UITabBar.appearance().unselectedItemTintColor = UIColor.secondaryLabel
+        UITabBar.appearance().tintColor = UIColor.label
     }
 
     var body: some View {

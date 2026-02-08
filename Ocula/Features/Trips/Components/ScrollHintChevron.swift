@@ -13,7 +13,7 @@ struct ScrollHintChevron: View {
     var body: some View {
         Image(systemName: "chevron.compact.forward")
             .font(.system(size: 20, weight: .semibold))
-            .foregroundStyle(.white.opacity(0.85))
+            .foregroundStyle(AppTheme.Colors.primary.opacity(0.85))
             .padding(.vertical, 10)
             .padding(.horizontal, 10)
             .glassEffect(in: Capsule())

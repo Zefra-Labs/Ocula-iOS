@@ -40,7 +40,7 @@ func actionRow(
         if let trailingValue {
             Text(trailingValue)
                 .font(.system(size: 25, weight: .bold))
-                .foregroundColor(.white)
+                .foregroundColor(AppTheme.Colors.primary)
         }
         
         Image(systemName: "chevron.right")
@@ -67,7 +67,7 @@ struct PressableRowStyle: ButtonStyle {
             .scaleEffect(configuration.isPressed ? 0.94 : 1.0)
             .background(
                 RoundedRectangle(cornerRadius: AppTheme.Radius.xlg, style: .continuous)
-                    .fill(Color.white.opacity(configuration.isPressed ? 0.08 : 0))
+                    .fill(Color.primary.opacity(configuration.isPressed ? 0.08 : 0))
             )
             .animation(.easeOut(duration: 0.25), value: configuration.isPressed)
     }
