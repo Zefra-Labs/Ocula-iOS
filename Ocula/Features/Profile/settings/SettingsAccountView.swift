@@ -10,33 +10,32 @@ import SwiftUI
 struct SettingsAccountView: View {
     var body: some View {
         SettingsScaffold(title: "Account") {
-            ScrollView {
-                VStack(spacing: 12) {
+            SettingsList {
+                Section {
                     actionRow(
                         icon: "person.crop.circle",
                         title: "Profile Info",
                         subtitle: "Update your name and photo",
-                        destination: AnyView(SettingsProfileInfoView())
+                        destination: AnyView(SettingsProfileInfoView()),
+                        style: .list
                     )
 
                     actionRow(
                         icon: "envelope.fill",
                         title: "Email",
                         subtitle: "Manage login email",
-                        destination: AnyView(SettingsEmailView())
+                        destination: AnyView(SettingsEmailView()),
+                        style: .list
                     )
 
                     actionRow(
                         icon: "ipad.and.iphone",
                         title: "Devices",
                         subtitle: "Manage linked Ocula devices",
-                        destination: AnyView(SettingsDevicesView())
+                        destination: AnyView(SettingsDevicesView()),
+                        style: .list
                     )
-
-                    Spacer(minLength: 80)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }
@@ -49,35 +48,26 @@ struct SettingsProfileInfoView: View {
 
     var body: some View {
         SettingsScaffold(title: "Profile Info") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.md) {
-                    settingsRow(title: "Display Name") {
+            SettingsList {
+                Section {
+                    LabeledContent("Display Name") {
                         TextField("Name", text: $displayName)
-                            .textFieldStyle(.roundedBorder)
-                            .frame(maxWidth: 180)
+                            .multilineTextAlignment(.trailing)
                     }
 
-                    settingsRow(title: "Bio") {
-                        VStack(alignment: .trailing) {
+                    LabeledContent("Bio") {
+                        VStack(alignment: .trailing, spacing: 8) {
                             TextField("Short bio", text: $bio)
-                                .textFieldStyle(.roundedBorder)
-                                .frame(maxWidth: 180)
+                                .multilineTextAlignment(.trailing)
                             Toggle("", isOn: $autoUpload)
                                 .labelsHidden()
                                 .tint(.blue)
                         }
                     }
 
-                    settingsRow(title: "Auto Upload Clips") {
-                        Toggle("", isOn: $autoUpload)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
-
-                    Spacer(minLength: 80)
+                    Toggle("Auto Upload Clips", isOn: $autoUpload)
+                        .tint(.blue)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }
@@ -89,26 +79,18 @@ struct SettingsEmailView: View {
 
     var body: some View {
         SettingsScaffold(title: "Email") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.md) {
-                    settingsRow(title: "Primary Email") {
+            SettingsList {
+                Section {
+                    LabeledContent("Primary Email") {
                         TextField("Email", text: $email)
-                            .textFieldStyle(.roundedBorder)
                             .textInputAutocapitalization(.never)
                             .keyboardType(.emailAddress)
-                            .frame(maxWidth: 200)
+                            .multilineTextAlignment(.trailing)
                     }
 
-                    settingsRow(title: "Product Updates") {
-                        Toggle("", isOn: $marketingEmails)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
-
-                    Spacer(minLength: 80)
+                    Toggle("Product Updates", isOn: $marketingEmails)
+                        .tint(.blue)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }
@@ -120,24 +102,14 @@ struct SettingsDevicesView: View {
 
     var body: some View {
         SettingsScaffold(title: "Devices") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.md) {
-                    settingsRow(title: "Crash Detection Alerts") {
-                        Toggle("", isOn: $crashDetection)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
+            SettingsList {
+                Section {
+                    Toggle("Crash Detection Alerts", isOn: $crashDetection)
+                        .tint(.blue)
 
-                    settingsRow(title: "Auto Sync Footage") {
-                        Toggle("", isOn: $autoSync)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
-
-                    Spacer(minLength: 80)
+                    Toggle("Auto Sync Footage", isOn: $autoSync)
+                        .tint(.blue)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }

@@ -10,33 +10,32 @@ import SwiftUI
 struct SettingsPreferencesView: View {
     var body: some View {
         SettingsScaffold(title: "Preferences") {
-            ScrollView {
-                VStack(spacing: 12) {
+            SettingsList {
+                Section {
                     actionRow(
                         icon: "bell.fill",
                         title: "Notifications",
                         subtitle: "Alerts, summaries, and warnings",
-                        destination: AnyView(SettingsNotificationsView())
+                        destination: AnyView(SettingsNotificationsView()),
+                        style: .list
                     )
 
                     actionRow(
                         icon: "paintbrush.fill",
                         title: "Appearance",
                         subtitle: "Theme and display settings",
-                        destination: AnyView(SettingsAppearanceView())
+                        destination: AnyView(SettingsAppearanceView()),
+                        style: .list
                     )
 
                     actionRow(
                         icon: "ruler",
                         title: "Units",
                         subtitle: "Distance and speed preferences",
-                        destination: AnyView(SettingsUnitsView())
+                        destination: AnyView(SettingsUnitsView()),
+                        style: .list
                     )
-
-                    Spacer(minLength: 80)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }
@@ -50,39 +49,25 @@ struct SettingsNotificationsView: View {
 
     var body: some View {
         SettingsScaffold(title: "Notifications") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.md) {
-                    settingsRow(heading: "Alerts", title: "Drive Alerts") {
-                        Toggle("", isOn: $driveAlerts)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
+            SettingsList {
+                Section(header: SettingsSectionHeader(title: "Alerts")) {
+                    Toggle("Drive Alerts", isOn: $driveAlerts)
+                        .tint(.blue)
 
-                    settingsRow(title: "Daily Summary") {
-                        Toggle("", isOn: $dailySummary)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
+                    Toggle("Daily Summary", isOn: $dailySummary)
+                        .tint(.blue)
 
-                    settingsRow(title: "Sounds") {
-                        Toggle("", isOn: $soundEnabled)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
-
-                    settingsRow(
-                        heading: "Quiet Hours",
-                        subheading: "Notifications pause during this time.",
-                        title: "Start Time"
-                    ) {
-                        DatePicker("", selection: $quietHoursStart, displayedComponents: .hourAndMinute)
-                            .labelsHidden()
-                    }
-
-                    Spacer(minLength: 80)
+                    Toggle("Sounds", isOn: $soundEnabled)
+                        .tint(.blue)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
+
+                Section(
+                    header: SettingsSectionHeader(title: "Quiet Hours"),
+                    footer: Text("Notifications pause during this time.")
+                        .captionStyle()
+                ) {
+                    DatePicker("Start Time", selection: $quietHoursStart, displayedComponents: .hourAndMinute)
+                }
             }
         }
     }
@@ -96,38 +81,23 @@ struct SettingsAppearanceView: View {
 
     var body: some View {
         SettingsScaffold(title: "Appearance") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.md) {
-                    settingsRow(title: "Large Text") {
-                        Toggle("", isOn: $largeText)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
+            SettingsList {
+                Section {
+                    Toggle("Large Text", isOn: $largeText)
+                        .tint(.blue)
 
-                    settingsRow(title: "Motion Effects") {
-                        Toggle("", isOn: $motionEffects)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
+                    Toggle("Motion Effects", isOn: $motionEffects)
+                        .tint(.blue)
 
-                    settingsRow(title: "Theme") {
-                        Picker("", selection: $theme) {
-                            Text("System").tag("System")
-                            Text("Light").tag("Light")
-                            Text("Dark").tag("Dark")
-                        }
-                        .pickerStyle(.navigationLink)
+                    Picker("Theme", selection: $theme) {
+                        Text("System").tag("System")
+                        Text("Light").tag("Light")
+                        Text("Dark").tag("Dark")
                     }
+                    .pickerStyle(.navigationLink)
 
-                    settingsRow(title: "Accent Color") {
-                        ColorPicker("", selection: $accentColor, supportsOpacity: false)
-                            .labelsHidden()
-                    }
-
-                    Spacer(minLength: 80)
+                    ColorPicker("Accent Color", selection: $accentColor, supportsOpacity: false)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }
@@ -140,38 +110,33 @@ struct SettingsUnitsView: View {
 
     var body: some View {
         SettingsScaffold(title: "Units") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.md) {
-                    settingsRow(title: "Distance Unit") {
-                        Picker("Distance", selection: $distanceUnit) {
-                            Text("Kilometers").tag(0)
-                            Text("Miles").tag(1)
-                        }
-                        .pickerStyle(.segmented)
-                        .frame(maxWidth: 200)
+            SettingsList {
+                Section(header: SettingsSectionHeader(title: "Distance")) {
+                    Picker("Distance Unit", selection: $distanceUnit) {
+                        Text("Kilometers").tag(0)
+                        Text("Miles").tag(1)
                     }
+                    .pickerStyle(.segmented)
+                }
 
-                    settingsRow(
-                        heading: "Speed",
-                        title: "Speed Limit Buffer",
-                        subtitle: "\(Int(speedLimitAlert)) \(distanceUnit == 0 ? "km/h" : "mph") over limit"
-                    ) {
+                Section(header: SettingsSectionHeader(title: "Speed")) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Speed Limit Buffer")
+                            .headlineStyle()
+                        Text("\(Int(speedLimitAlert)) \(distanceUnit == 0 ? "km/h" : "mph") over limit")
+                            .captionStyle()
                         Slider(value: $speedLimitAlert, in: 0...15, step: 1)
                             .tint(.blue)
-                            .frame(maxWidth: 160)
                     }
-
-                    settingsRow(title: "Clip Retention (Days)") {
-                        Stepper(value: $clipRetentionDays, in: 1...30) {
-                            Text("\(clipRetentionDays)")
-                                .headlineStyle()
-                        }
-                    }
-
-                    Spacer(minLength: 80)
+                    .padding(.vertical, 4)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
+
+                Section(header: SettingsSectionHeader(title: "Storage")) {
+                    Stepper(value: $clipRetentionDays, in: 1...30) {
+                        Text("Clip Retention (Days): \(clipRetentionDays)")
+                            .headlineStyle()
+                    }
+                }
             }
         }
     }

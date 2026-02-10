@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+enum ActionRowStyle {
+    case card
+    case list
+}
+
 @ViewBuilder
 func actionRow(
     icon: String,
@@ -15,7 +20,8 @@ func actionRow(
     subtitle: String,
     trailingValue: String? = nil,
     destination: AnyView? = nil,
-    action: (() -> Void)? = nil
+    action: (() -> Void)? = nil,
+    style: ActionRowStyle = .card
 ) -> some View {
     
     let rowContent = HStack(spacing: 16) {
@@ -42,25 +48,44 @@ func actionRow(
                 .font(.system(size: 25, weight: .bold))
                 .foregroundColor(AppTheme.Colors.primary)
         }
-        
-        Image(systemName: "chevron.right")
-            .bodyStyle()
-            .foregroundColor(AppTheme.Colors.secondary)
+
+        if style == .card {
+            Image(systemName: "chevron.right")
+                .bodyStyle()
+                .foregroundColor(AppTheme.Colors.secondary)
+        }
     }
-        .padding(AppTheme.Spacing.md)
-        .background(
-            RoundedRectangle(cornerRadius: AppTheme.Radius.xlg)
-                .fill(AppTheme.Colors.primary.opacity(0.08))
-)
-    
-    if let destination {
-        NavigationLink { destination } label: { rowContent }
-            .buttonStyle(PressableRowStyle())
-    } else {
-        Button(action: { action?() }) {
+    let styledContent = Group {
+        if style == .card {
+            rowContent
+                .padding(AppTheme.Spacing.md)
+                .background(
+                    RoundedRectangle(cornerRadius: AppTheme.Radius.xlg)
+                        .fill(AppTheme.Colors.primary.opacity(0.08))
+                )
+        } else {
             rowContent
         }
-        .buttonStyle(PressableRowStyle())
+    }
+    
+    if let destination {
+        if style == .card {
+            NavigationLink { destination } label: { styledContent }
+                .buttonStyle(PressableRowStyle())
+        } else {
+            NavigationLink { destination } label: { styledContent }
+        }
+    } else {
+        if style == .card {
+            Button(action: { action?() }) {
+                styledContent
+            }
+            .buttonStyle(PressableRowStyle())
+        } else {
+            Button(action: { action?() }) {
+                styledContent
+            }
+        }
     }
 }
 struct PressableRowStyle: ButtonStyle {

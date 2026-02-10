@@ -20,7 +20,7 @@ struct SettingsView: View {
         .oculaAlertSheet(
             isPresented: $session.showSignOutOverlay,
             icon: "circle.dotted",
-            iconTint: .yellow,
+            iconTint: .blue,
             title: "Signing Out...",
             message: "",
             showsIconRing: false,
@@ -45,82 +45,90 @@ struct SettingsView: View {
 private extension SettingsView {
 
     var settingsActions: some View {
-        ScrollView {
-            VStack(spacing: 12) {
-                SettingsSectionHeader(title: "Account")
-                groupedActionRow([
-                    GroupedActionRowItem(
-                        icon: "person.fill",
-                        title: "Profile",
-                        subtitle: "Manage your profile details like email, nickname and more",
-                        destination: AnyView(SettingsAccountView())
-                    ),
-                    GroupedActionRowItem(
-                        icon: "lock.fill",
-                        title: "Privacy & Security",
-                        subtitle: "Manage your account's security and data controls",
-                        destination: AnyView(SettingsSecurityView())
-                    )
-                ])
-                SettingsSectionHeader(title: "App")
+        SettingsList {
+            Section(header: SettingsSectionHeader(title: "Account")) {
+                actionRow(
+                    icon: "person.fill",
+                    title: "Profile",
+                    subtitle: "Manage your profile details like email, nickname and more",
+                    destination: AnyView(SettingsAccountView()),
+                    style: .list
+                )
+
+                actionRow(
+                    icon: "lock.fill",
+                    title: "Privacy & Security",
+                    subtitle: "Manage your account's security and data controls",
+                    destination: AnyView(SettingsSecurityView()),
+                    style: .list
+                )
+            }
+
+            Section(header: SettingsSectionHeader(title: "App")) {
                 actionRow(
                     icon: "car.fill",
                     title: "Car",
                     subtitle: "Driver, vehicle, and color",
-                    destination: AnyView(SettingsCarView())
+                    destination: AnyView(SettingsCarView()),
+                    style: .list
                 )
-                SettingsSectionHeader(title: "Account Settings")
-                groupedActionRow([
-                    GroupedActionRowItem(
-                        icon: "person.fill",
-                        title: "Profile",
-                        subtitle: "Manage your profile details like email, nickname and more",
-                        destination: AnyView(SettingsAccountView())
-                    ),
-                    GroupedActionRowItem(
-                        icon: "car.fill",
-                        title: "Car",
-                        subtitle: "Driver, vehicle, and color",
-                        destination: AnyView(SettingsSecurityView())
-                    )
-                ])
-                
-                SettingsSectionHeader(title: "Preferences")
+            }
 
+            Section(header: SettingsSectionHeader(title: "Account Settings")) {
+                actionRow(
+                    icon: "person.fill",
+                    title: "Profile",
+                    subtitle: "Manage your profile details like email, nickname and more",
+                    destination: AnyView(SettingsAccountView()),
+                    style: .list
+                )
+
+                actionRow(
+                    icon: "car.fill",
+                    title: "Car",
+                    subtitle: "Driver, vehicle, and color",
+                    destination: AnyView(SettingsSecurityView()),
+                    style: .list
+                )
+            }
+
+            Section(header: SettingsSectionHeader(title: "Preferences")) {
                 actionRow(
                     icon: "slider.horizontal.3",
                     title: "Preferences",
                     subtitle: "Appearance, notifications, and units",
-                    destination: AnyView(SettingsPreferencesView())
+                    destination: AnyView(SettingsPreferencesView()),
+                    style: .list
                 )
 
-                
                 actionRow(
                     icon: "lock.fill",
                     title: "Privacy & Security",
                     subtitle: "Permissions and data controls",
-                    destination: AnyView(SettingsSecurityView())
+                    destination: AnyView(SettingsSecurityView()),
+                    style: .list
                 )
-                SettingsSectionHeader(title: "Group Settings")
-                groupedActionRow([
-                    GroupedActionRowItem(
-                        icon: "wand.and.stars",
-                        title: "Weekly driving report",
-                        subtitle: "Your habits, highlights, and improvements",
-                        destination: AnyView(SettingsSupportView())
-                    ),
-                    GroupedActionRowItem(
-                        icon: "chart.line.uptrend.xyaxis",
-                        title: "Compare time periods",
-                        subtitle: "See how your score changed",
-                        destination: AnyView(SettingsSupportView())
-                    )
-                ])
+            }
 
-                
+            Section(header: SettingsSectionHeader(title: "Group Settings")) {
+                actionRow(
+                    icon: "wand.and.stars",
+                    title: "Weekly driving report",
+                    subtitle: "Your habits, highlights, and improvements",
+                    destination: AnyView(SettingsSupportView()),
+                    style: .list
+                )
 
+                actionRow(
+                    icon: "chart.line.uptrend.xyaxis",
+                    title: "Compare time periods",
+                    subtitle: "See how your score changed",
+                    destination: AnyView(SettingsSupportView()),
+                    style: .list
+                )
+            }
 
-                SettingsSectionHeader(title: "Settings")
+            Section(header: SettingsSectionHeader(title: "Settings")) {
                 actionRow(
                     icon: "rectangle.portrait.and.arrow.right",
                     iconColor: AppTheme.Colors.destructive,
@@ -135,11 +143,10 @@ private extension SettingsView {
                                 animateIcon = false
                             }
                         }
-                    }
+                    },
+                    style: .list
                 )
             }
-            .padding(.top, AppTheme.Spacing.sm)
-            .padding(.horizontal, AppTheme.Spacing.md)
         }
     }
 

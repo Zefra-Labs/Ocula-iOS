@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CarColorOption: Identifiable {
+struct CarColorOption: Identifiable, Hashable {
     let id = UUID()
     let name: String
     let hex: String

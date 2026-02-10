@@ -46,7 +46,7 @@ struct SignupView: View {
         .oculaAlertSheet(
             isPresented: $showSigningUpNotification,
             icon: "circle.dotted",
-            iconTint: .yellow,
+            iconTint: .blue,
             title: "Creating Account...",
             message: "",
             showsIconRing: false,

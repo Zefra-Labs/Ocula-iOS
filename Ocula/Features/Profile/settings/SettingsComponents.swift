@@ -18,51 +18,28 @@ struct SettingsScaffold<Content: View>: View {
     }
 
     var body: some View {
-        VStack(spacing: AppTheme.Spacing.lg) {
-            SettingsNavBar(title: title)
-            content
-        }
-        .padding(.top, AppTheme.Spacing.md)
-        .background(AppTheme.Colors.background)
-        .toolbar(.hidden, for: .navigationBar)
+        content
+            .navigationTitle(title)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar(.visible, for: .navigationBar)
+            .toolbarBackground(AppTheme.Colors.background, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .background(AppTheme.Colors.background)
     }
 }
 
-struct SettingsNavBar: View {
+struct SettingsList<Content: View>: View {
+    let content: Content
 
-    let title: String
-    var showsBackButton: Bool = true
-
-    @Environment(\.dismiss) private var dismiss
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
 
     var body: some View {
-        HStack {
-            if showsBackButton {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(AppTheme.Colors.primary)
-                        .font(.title3.weight(.semibold))
-                }
-            } else {
-                Color.clear
-                    .frame(width: 28, height: 28)
-            }
-
-            Spacer()
-
-            Text(title)
-                .headlineStyle()
-                .fontWeight(.bold)
-
-            Spacer()
-
-            Color.clear
-                .frame(width: 28, height: 28)
-
-        }
-        .padding(.horizontal, AppTheme.Spacing.md)
+        List { content }
+            .listStyle(.insetGrouped)
+            .scrollContentBackground(.hidden)
+            .background(AppTheme.Colors.background)
     }
 }
 
@@ -74,14 +51,34 @@ struct SettingsSectionHeader: View {
         Text(title)
             .font(.headline)
             .foregroundColor(AppTheme.Colors.secondary)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.leading, AppTheme.Spacing.md)
+            .textCase(nil)
+    }
+}
+
+struct SettingsRowText: View {
+    let title: String
+    let subtitle: String?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+                .headlineStyle()
+
+            if let subtitle {
+                Text(subtitle)
+                    .captionStyle()
+            }
+        }
     }
 }
 
 #Preview {
     SettingsScaffold(title: "Preview") {
-        Text("Preview Content")
-            .foregroundColor(AppTheme.Colors.primary)
+        SettingsList {
+            Section(header: SettingsSectionHeader(title: "Preview")) {
+                Text("Preview Content")
+                    .foregroundColor(AppTheme.Colors.primary)
+            }
+        }
     }
 }

@@ -21,37 +21,49 @@ struct SettingsCarView: View {
 
     var body: some View {
         SettingsScaffold(title: "Car") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.lg) {
-                    SettingsSectionHeader(title: "Driver")
+            SettingsList {
+                Section(header: SettingsSectionHeader(title: "Driver")) {
+                    TextField("Driver nickname", text: $driverNickname)
+                }
 
-                    VStack(spacing: AppTheme.Spacing.sm) {
-                        textFieldCard(title: "Driver nickname", text: $driverNickname)
+                Section(header: SettingsSectionHeader(title: "Vehicle")) {
+                    TextField("Vehicle nickname", text: $vehicleNickname)
+
+                    Picker("Car Brand", selection: $selectedBrand) {
+                        ForEach(CarBrand.allCases) { brand in
+                            Text(brand.rawValue).tag(brand)
+                        }
                     }
+                    .pickerStyle(.navigationLink)
 
-                    SettingsSectionHeader(title: "Vehicle")
-
-                    VStack(spacing: AppTheme.Spacing.sm) {
-                        textFieldCard(title: "Vehicle nickname", text: $vehicleNickname)
-
-                        brandPicker
-
-                        colorPicker
+                    Picker("Car Color", selection: $selectedColor) {
+                        ForEach(CarColorOption.standard) { option in
+                            HStack(spacing: 8) {
+                                Circle()
+                                    .fill(Color(hex: option.hex) ?? AppTheme.Colors.secondary)
+                                    .frame(width: 16, height: 16)
+                                Text(option.name)
+                            }
+                            .tag(option)
+                        }
                     }
+                    .pickerStyle(.navigationLink)
+                }
 
+                Section {
                     Button(isSaving ? "Saving..." : "Save Changes") {
                         saveProfilePreferences()
                     }
                     .buttonStyle(PrimaryButtonStyle())
                     .disabled(isSaving)
+                }
 
-                    if let saveMessage {
+                if let saveMessage {
+                    Section {
                         Text(saveMessage)
                             .captionStyle()
                     }
                 }
-                .padding(.horizontal, AppTheme.Spacing.md)
-                .padding(.bottom, AppTheme.Spacing.xl)
             }
             .onAppear(perform: loadCurrentValues)
         }
@@ -59,93 +71,6 @@ struct SettingsCarView: View {
 }
 
 private extension SettingsCarView {
-
-    var brandPicker: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Car brand")
-                .captionStyle()
-
-            Menu {
-                ForEach(CarBrand.allCases) { brand in
-                    Button(brand.rawValue) {
-                        selectedBrand = brand
-                    }
-                }
-            } label: {
-                HStack {
-                    Text(selectedBrand.rawValue)
-                        .foregroundColor(AppTheme.Colors.primary)
-
-                    Spacer()
-
-                    Image(systemName: "chevron.down")
-                        .foregroundColor(AppTheme.Colors.secondary)
-                }
-                .padding(AppTheme.Spacing.md)
-                .background(
-                    RoundedRectangle(cornerRadius: AppTheme.Radius.xlg, style: .continuous)
-                        .fill(AppTheme.Colors.surfaceDark.opacity(0.35))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: AppTheme.Radius.xlg, style: .continuous)
-                                .stroke(AppTheme.Colors.primary.opacity(0.07), lineWidth: 1)
-                        )
-                )
-            }
-        }
-    }
-
-    var colorPicker: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Car color")
-                .captionStyle()
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                    ForEach(CarColorOption.standard) { option in
-                        Button {
-                            selectedColor = option
-                        } label: {
-                            VStack(spacing: 6) {
-                                Circle()
-                                    .fill(Color(hex: option.hex) ?? AppTheme.Colors.secondary)
-                                    .frame(width: 26, height: 26)
-                                    .overlay(
-                                        Circle()
-                                            .stroke(AppTheme.Colors.primary, lineWidth: selectedColor.id == option.id ? 2 : 0)
-                                    )
-
-                                Text(option.name)
-                                    .font(AppTheme.Fonts.medium(11))
-                                    .foregroundColor(AppTheme.Colors.secondary)
-                            }
-                            .padding(.vertical, 6)
-                            .padding(.horizontal, 4)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-            }
-        }
-    }
-
-    func textFieldCard(title: String, text: Binding<String>) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(title)
-                .captionStyle()
-
-            TextField("", text: text)
-                .foregroundColor(AppTheme.Colors.primary)
-                .padding(AppTheme.Spacing.md)
-                .background(
-                    RoundedRectangle(cornerRadius: AppTheme.Radius.xlg, style: .continuous)
-                        .fill(AppTheme.Colors.surfaceDark.opacity(0.35))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: AppTheme.Radius.xlg, style: .continuous)
-                                .stroke(AppTheme.Colors.primary.opacity(0.07), lineWidth: 1)
-                        )
-                )
-        }
-    }
 
     func loadCurrentValues() {
         driverNickname = session.user?.driverNickname ?? "Night Runner"
