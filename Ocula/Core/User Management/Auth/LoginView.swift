@@ -4,95 +4,114 @@
 //
 //  Created by Tyson Miles on 1/2/2026.
 //
+
 import SwiftUI
-import FirebaseCore
-import Firebase
-import FirebaseAuth
+
 struct LoginView: View {
-
     @EnvironmentObject var session: SessionManager
-    @State private var email = ""
-    @State private var password = ""
-    @State private var error: String?
-    @State private var showSigningInNotification = false
-    @State private var showSignInErrorNotification = false
-    @State private var animateIcon = false
+    @ObservedObject var viewModel: AuthViewModel
 
-    var onAuthSuccess: (() -> Void)? = nil
+    let onBack: () -> Void
+    let onForgotPassword: () -> Void
+    let onSwitchToSignUp: () -> Void
+
+    @State private var showValidation = false
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 16) {
-                TextField("Email", text: $email)
-                    .textInputAutocapitalization(.never)
-                    .keyboardType(.emailAddress)
-                    .textFieldStyle(.roundedBorder)
+        VStack(alignment: .leading, spacing: 20) {
 
-                SecureField("Password", text: $password)
-                    .textFieldStyle(.roundedBorder)
+            VStack(alignment: .leading, spacing: 4) {
+                AuthBackButton(action: onBack)
+                    .padding(.bottom, AppTheme.Spacing.sm)
+                Text("Continue with")
+                    .font(AppTheme.Fonts.semibold(20))
+                    .foregroundStyle(AppTheme.Colors.secondary)
 
-                if let error {
-                    Text(error).foregroundColor(.red)
-                }
-
-                Button("Sign In") {
-                    login()
-                }
-                .buttonStyle(.borderedProminent)
+                Text("Email")
+                    .font(AppTheme.Fonts.bold(36))
+                    .foregroundStyle(AppTheme.Colors.primary)
             }
-        }
-        .oculaAlertSheet(
-            isPresented: $showSigningInNotification,
-            icon: "circle.dotted",
-            iconTint: .blue,
-            title: "Signing In...",
-            message: "",
-            showsIconRing: false,
-            iconModifier: { image in
-                AnyView(image.symbolRenderingMode(.hierarchical))
-            },
-            iconAnimator: { image, _ in
-                if #available(iOS 17.0, *) {
-                    return AnyView(
-                        image
-                            .symbolEffect(.rotate.byLayer, options: .repeat(.continuous))
+
+            VStack(alignment: .leading, spacing: 0) {
+                Spacer()
+                VStack(alignment: .leading, spacing: 16) {
+                    AuthTextField(
+                        title: "Email",
+                        placeholder: "you@ocula.com",
+                        text: $viewModel.email,
+                        keyboardType: .emailAddress,
+                        textContentType: .emailAddress,
+                        autocapitalization: .never,
+                        error: emailError
                     )
-                } else {
-                    return AnyView(image)
+                    .onChange(of: viewModel.email) { _ in
+                        viewModel.clearErrors()
+                    }
+
+                    AuthSecureField(
+                        title: "Password",
+                        placeholder: "Password",
+                        text: $viewModel.password,
+                        textContentType: .password,
+                        error: passwordError
+                    )
+                    .onChange(of: viewModel.password) { _ in
+                        viewModel.clearErrors()
+                    }
+
+                    AuthLinkButton(title: "Forgot password?") {
+                        onForgotPassword()
+                    }
+
+                    if let errorMessage = viewModel.errorMessage {
+                        AuthInlineMessage(text: errorMessage, style: .error)
+                    }
                 }
-            },
-            iconAnimationActive: animateIcon
-        )
-        .oculaAlertSheet(
-            isPresented: $showSignInErrorNotification,
-            icon: "person.crop.circle.badge.exclamationmark",
-            title: "Unable to Sign In",
-            message: "An error occured while signing you in. The error was \(error ?? "Unknown Error")",
-            showsIconRing: false,
-            iconModifier: { image in
-                AnyView(image.symbolRenderingMode(.multicolor))
-            },
-            primaryTitle: "Try Again",
-            primaryAction: { login() },
-            secondaryTitle: "Learn More",
-            secondaryAction: { print("Show Help page")},
-        )
+
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            AuthPrimaryButton(
+                title: "Sign In",
+                isLoading: viewModel.isLoading,
+                isDisabled: !viewModel.canSubmitLogin,
+                action: handleLogin
+            )
+
+            Button(action: onSwitchToSignUp) {
+                Text("Don't have an account? Sign up")
+                    .font(AppTheme.Fonts.semibold(13))
+                    .foregroundStyle(AppTheme.Colors.secondary)
+            }
+            .buttonStyle(.plain)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.bottom, AppTheme.Spacing.xxl)
+        .disabled(viewModel.isLoading)
     }
 
-    private func login() {
-        error = nil
+    private var emailError: String? {
+        if showValidation && !viewModel.isEmailValid {
+            return "Enter a valid email address."
+        }
+        return nil
+    }
+
+    private var passwordError: String? {
+        if showValidation && !viewModel.isPasswordValid {
+            return "Use at least 6 characters and a capital letter."
+        }
+        return nil
+    }
+
+    private func handleLogin() {
+        showValidation = true
+        guard viewModel.canSubmitLogin else { return }
         session.shouldDeferMainView = true
-        animateIcon = true
-        showSigningInNotification = true
-        Auth.auth().signIn(withEmail: email, password: password) { _, error in
-            if let error {
-                self.error = error.localizedDescription
-                showSigningInNotification = false
-                showSignInErrorNotification = true
+        Task {
+            let success = await viewModel.signIn()
+            if !success {
                 session.shouldDeferMainView = false
-            } else {
-                showSigningInNotification = false
-                onAuthSuccess?()
             }
         }
     }

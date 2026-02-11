@@ -4,114 +4,161 @@
 //
 //  Created by Tyson Miles on 1/2/2026.
 //
+
 import SwiftUI
-import FirebaseAuth
-import Firebase
-import FirebaseFirestore
 
-struct SignupView: View {
-
-    @EnvironmentObject var session: SessionManager
-    @State private var email = ""
-    @State private var password = ""
-    @State private var displayName = ""
-    @State private var error: String?
-    @State private var showSigningUpNotification = false
-    @State private var animateIcon = false
-
-    var onAuthSuccess: (() -> Void)? = nil
-
-    var body: some View {
-        VStack(spacing: 16) {
-            TextField("Display Name", text: $displayName)
-                .textFieldStyle(.roundedBorder)
-
-            TextField("Email", text: $email)
-                .textInputAutocapitalization(.never)
-                .keyboardType(.emailAddress)
-                .textFieldStyle(.roundedBorder)
-
-            SecureField("Password", text: $password)
-                .textFieldStyle(.roundedBorder)
-
-            if let error {
-                Text(error).foregroundColor(.red)
-            }
-
-            Button("Create Account") {
-                signup()
-            }
-            .buttonStyle(.borderedProminent)
-        }
-        .oculaAlertSheet(
-            isPresented: $showSigningUpNotification,
-            icon: "circle.dotted",
-            iconTint: .blue,
-            title: "Creating Account...",
-            message: "",
-            showsIconRing: false,
-            iconModifier: { image in
-                AnyView(image.symbolRenderingMode(.hierarchical))
-            },
-            iconAnimator: { image, _ in
-                if #available(iOS 17.0, *) {
-                    return AnyView(
-                        image
-                            .symbolEffect(.rotate.byLayer, options: .repeat(.continuous))
-                    )
-                } else {
-                    return AnyView(image)
-                }
-            },
-            iconAnimationActive: animateIcon
-        )
+struct SignUpView: View {
+    enum Step {
+        case email
+        case password
     }
 
-    private func signup() {
-        error = nil
-        session.shouldDeferMainView = true
-        animateIcon = true
-        showSigningUpNotification = true
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
-            if let error {
-                self.error = error.localizedDescription
-                showSigningUpNotification = false
-                session.shouldDeferMainView = false
-                return
+    @EnvironmentObject var session: SessionManager
+    @ObservedObject var viewModel: AuthViewModel
+
+    let onBack: () -> Void
+    let onSwitchToLogin: () -> Void
+
+    @State private var step: Step = .email
+    @State private var showValidation = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 4) {
+                AuthBackButton(action: handleBack)
+                    .padding(.bottom, AppTheme.Spacing.sm)
+                Text("Create An")
+                    .font(AppTheme.Fonts.semibold(20))
+                    .foregroundStyle(AppTheme.Colors.secondary)
+
+                Text("Account")
+                    .font(AppTheme.Fonts.bold(36))
+                    .foregroundStyle(AppTheme.Colors.primary)
             }
 
-            guard let uid = result?.user.uid else { return }
-
-            let user = AppUser(
-                id: uid,
-                email: email,
-                displayName: displayName,
-                createdAt: Date(),
-                lastLogin: Date(),
-                accountType: "standard",
-                onboardingComplete: false,
-                driverNickname: nil,
-                vehicleNickname: nil,
-                vehicleBrand: nil,
-                vehicleColorHex: nil
-            )
-
-            do {
-                try Firestore.firestore()
-                    .collection("users")
-                    .document(uid)
-                    .setData(from: user) { error in
-                    if let error {
-                        self.error = error.localizedDescription
-                        session.shouldDeferMainView = false
+            VStack(alignment: .leading, spacing: 0) {
+                Spacer()
+                VStack(alignment: .leading, spacing: 16) {
+                    if step == .email {
+                        AuthTextField(
+                            title: "Email",
+                            placeholder: "you@ocula.com",
+                            text: $viewModel.email,
+                            keyboardType: .emailAddress,
+                            textContentType: .emailAddress,
+                            autocapitalization: .never,
+                            error: emailError
+                        )
+                        .onChange(of: viewModel.email) { _ in
+                            viewModel.clearErrors()
+                        }
                     } else {
-                        onAuthSuccess?()
+                        AuthSecureField(
+                            title: "Password",
+                            placeholder: "Create a password",
+                            text: $viewModel.password,
+                            textContentType: .newPassword,
+                            error: passwordError
+                        )
+                        .onChange(of: viewModel.password) { _ in
+                            viewModel.clearErrors()
+                        }
+
+                        PasswordRequirementsView(password: viewModel.password)
+
+                        AuthSecureField(
+                            title: "Confirm password",
+                            placeholder: "Re-enter password",
+                            text: $viewModel.confirmPassword,
+                            textContentType: .newPassword,
+                            error: confirmPasswordError
+                        )
+                        .onChange(of: viewModel.confirmPassword) { _ in
+                            viewModel.clearErrors()
+                        }
                     }
-                    showSigningUpNotification = false
+
+                    if let errorMessage = viewModel.errorMessage {
+                        AuthInlineMessage(text: errorMessage, style: .error)
+                    }
                 }
-            } catch {
-                self.error = error.localizedDescription
-                showSigningUpNotification = false
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if step == .email {
+                AuthPrimaryButton(
+                    title: "Continue",
+                    isLoading: viewModel.isLoading,
+                    isDisabled: !viewModel.isEmailValid,
+                    action: handleContinue
+                )
+            } else {
+                AuthPrimaryButton(
+                    title: "Create Account",
+                    isLoading: viewModel.isLoading,
+                    isDisabled: !viewModel.canSubmitSignUp,
+                    action: handleSignUp
+                )
+            }
+
+            Button(action: onSwitchToLogin) {
+                Text("Already have an account? Log in")
+                    .font(AppTheme.Fonts.semibold(13))
+                    .foregroundStyle(AppTheme.Colors.secondary)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.bottom, AppTheme.Spacing.xxl)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .disabled(viewModel.isLoading)
+    }
+
+    private var emailError: String? {
+        if showValidation && !viewModel.isEmailValid {
+            return "Enter a valid email address."
+        }
+        return nil
+    }
+
+    private var passwordError: String? {
+        if showValidation && !viewModel.isPasswordValid {
+            return "Use at least 6 characters."
+        }
+        return nil
+    }
+
+    private var confirmPasswordError: String? {
+        if showValidation && !viewModel.isConfirmPasswordValid {
+            return "Passwords do not match."
+        }
+        return nil
+    }
+
+    private func handleBack() {
+        if step == .email {
+            onBack()
+        } else {
+            step = .email
+            showValidation = false
+        }
+    }
+
+    private func handleContinue() {
+        showValidation = true
+        guard viewModel.isEmailValid else { return }
+        viewModel.clearErrors()
+        withAnimation(.spring(response: 0.45, dampingFraction: 0.9)) {
+            step = .password
+        }
+    }
+
+    private func handleSignUp() {
+        showValidation = true
+        guard viewModel.canSubmitSignUp else { return }
+        session.shouldDeferMainView = true
+        Task {
+            let success = await viewModel.signUp()
+            if !success {
                 session.shouldDeferMainView = false
             }
         }

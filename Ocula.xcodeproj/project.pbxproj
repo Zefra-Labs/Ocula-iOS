@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B7821932F3B79FE00728F43 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7821922F3B79FE00728F43 /* GoogleSignIn */; };
+		8B7821952F3B79FE00728F43 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7821942F3B79FE00728F43 /* GoogleSignInSwift */; };
 		8B83864E2F279E13007F82CD /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8B83864D2F279E13007F82CD /* FirebaseAuth */; };
 		8B8386502F279E13007F82CD /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 8B83864F2F279E13007F82CD /* FirebaseAuthCombine-Community */; };
 		8B8386522F279E13007F82CD /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8386512F279E13007F82CD /* FirebaseCore */; };
@@ -42,6 +44,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8B7821902F3B799000728F43 /* Exceptions for "Ocula" folder in "Ocula" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8B9163612F23A12300D3A6D6 /* Ocula */;
+		};
 		8BD4B4182F3144B9004C9FA4 /* Exceptions for "Ocula" folder in "OculaTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -62,6 +71,7 @@
 		8B9163642F23A12300D3A6D6 /* Ocula */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				8B7821902F3B799000728F43 /* Exceptions for "Ocula" folder in "Ocula" target */,
 				8BD4B4182F3144B9004C9FA4 /* Exceptions for "Ocula" folder in "OculaTests" target */,
 				8BD4B4192F3144B9004C9FA4 /* Exceptions for "Ocula" folder in "OculaUITests" target */,
 			);
@@ -90,10 +100,12 @@
 				8B83865E2F279E13007F82CD /* FirebaseStorage in Frameworks */,
 				8B83865A2F279E13007F82CD /* FirebaseMessaging in Frameworks */,
 				8B8386542F279E13007F82CD /* FirebaseDatabase in Frameworks */,
+				8B7821932F3B79FE00728F43 /* GoogleSignIn in Frameworks */,
 				8B8386582F279E13007F82CD /* FirebaseFirestoreCombine-Community in Frameworks */,
 				8B8386562F279E13007F82CD /* FirebaseFirestore in Frameworks */,
 				8B8386502F279E13007F82CD /* FirebaseAuthCombine-Community in Frameworks */,
 				8B83865C2F279E13007F82CD /* FirebaseRemoteConfig in Frameworks */,
+				8B7821952F3B79FE00728F43 /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,6 +175,8 @@
 				8B8386592F279E13007F82CD /* FirebaseMessaging */,
 				8B83865B2F279E13007F82CD /* FirebaseRemoteConfig */,
 				8B83865D2F279E13007F82CD /* FirebaseStorage */,
+				8B7821922F3B79FE00728F43 /* GoogleSignIn */,
+				8B7821942F3B79FE00728F43 /* GoogleSignInSwift */,
 			);
 			productName = Ocula;
 			productReference = 8B9163622F23A12300D3A6D6 /* Ocula.app */;
@@ -248,6 +262,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				8B83864C2F279E13007F82CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				8B7821912F3B79FE00728F43 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8B9163632F23A12300D3A6D6 /* Products */;
@@ -454,6 +469,7 @@
 				DEVELOPMENT_TEAM = KCFUNZU449;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Ocula/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Ocula;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Ocula Needs Bluetooth to connect to devices.";
@@ -495,6 +511,7 @@
 				DEVELOPMENT_TEAM = KCFUNZU449;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Ocula/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Ocula;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Ocula Needs Bluetooth to connect to devices.";
@@ -652,6 +669,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8B7821912F3B79FE00728F43 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
 		8B83864C2F279E13007F82CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -663,6 +688,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8B7821922F3B79FE00728F43 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B7821912F3B79FE00728F43 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		8B7821942F3B79FE00728F43 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B7821912F3B79FE00728F43 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
 		8B83864D2F279E13007F82CD /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8B83864C2F279E13007F82CD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

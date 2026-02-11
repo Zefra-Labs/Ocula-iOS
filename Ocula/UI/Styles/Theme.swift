@@ -16,6 +16,7 @@ enum AppTheme {
         static let accent = Color("Accent")
         static let surfaceDark = Color("Dark")
         static let destructive = Color.red
+        static let blue = Color.blue
     }
 
     enum Spacing {
@@ -24,6 +25,8 @@ enum AppTheme {
         static let md: CGFloat = 16
         static let lg: CGFloat = 24
         static let xl: CGFloat = 32
+        static let authButton: CGFloat = 36
+        static let xxl: CGFloat = 48
     }
 
     enum Radius {

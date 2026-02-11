@@ -58,13 +58,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>75</string>
+					<string>73</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>74</string>
+					<string>72</string>
 					<key>Timestamp</key>
-					<string>792362900.408908</string>
+					<string>792503883.484727</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -80,16 +80,16 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>            primaryTitle: "Try Again",
+				<string>
 </string>
 				<key>leading</key>
-				<string>                AnyView(image.symbolRenderingMode(.multicolor))
-            },
+				<string>            }
+            .frame(maxWidth: .infinity, alignment: .leading)
 </string>
 				<key>trailing</key>
-				<string>            primaryAction: { login() },
-            secondaryTitle: "Learn More",
-            secondaryAction: { print("Show Help page")},
+				<string>            AuthPrimaryButton(
+                title: "Sign In",
+                isLoading: viewModel.isLoading,
 </string>
 			</dict>
 			<key>title</key>
