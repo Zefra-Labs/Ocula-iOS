@@ -20,7 +20,7 @@ struct SettingsLegalView: View {
                         actionRow(
                             icon: "hand.raised.fill",
                             title: "Privacy Policy",
-                            subtitle: "How your data is collected and used",
+                            subtitle: "How we collect and use your data",
                             action: {
                                 selectedLink = LegalLink(
                                     title: "Privacy Policy",
