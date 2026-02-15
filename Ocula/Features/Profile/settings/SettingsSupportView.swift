@@ -10,33 +10,32 @@ import SwiftUI
 struct SettingsSupportView: View {
     var body: some View {
         SettingsScaffold(title: "Support") {
-            ScrollView {
-                VStack(spacing: 12) {
+            SettingsList {
+                Section {
                     actionRow(
                         icon: "questionmark.circle.fill",
                         title: "Help Center",
                         subtitle: "FAQs and troubleshooting",
-                        destination: AnyView(SettingsHelpCenterView())
+                        destination: AnyView(SettingsHelpCenterView()),
+                        style: .list
                     )
 
                     actionRow(
                         icon: "exclamationmark.bubble.fill",
                         title: "Report a Problem",
                         subtitle: "Share feedback or issues",
-                        destination: AnyView(SettingsReportProblemView())
+                        destination: AnyView(SettingsReportProblemView()),
+                        style: .list
                     )
 
                     actionRow(
                         icon: "info.circle.fill",
                         title: "About Ocula",
                         subtitle: "Version and legal information",
-                        destination: AnyView(SettingsAboutView())
+                        destination: AnyView(SettingsAboutView()),
+                        style: .list
                     )
-
-                    Spacer(minLength: 80)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }
@@ -47,24 +46,18 @@ struct SettingsHelpCenterView: View {
 
     var body: some View {
         SettingsScaffold(title: "Help Center") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.md) {
-                    settingsRow(title: "Show Driving Tips") {
-                        Toggle("", isOn: $tipsEnabled)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
+            SettingsList {
+                Section {
+                    Toggle("Show Driving Tips", isOn: $tipsEnabled)
+                        .tint(.blue)
+                }
 
-                    settingsRow(
-                        heading: "Quick Links",
+                Section(header: SettingsSectionHeader(title: "Quick Links")) {
+                    SettingsRowText(
                         title: "Getting Started",
                         subtitle: "Camera setup, night mode, and storage."
                     )
-
-                    Spacer(minLength: 80)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }
@@ -76,29 +69,35 @@ struct SettingsReportProblemView: View {
 
     var body: some View {
         SettingsScaffold(title: "Report a Problem") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.md) {
-                    settingsRow(title: "Include Diagnostics") {
-                        Toggle("", isOn: $includeLogs)
-                            .labelsHidden()
-                            .tint(.blue)
+            SettingsList {
+                Section {
+                    Toggle(isOn: $includeLogs) {
+                        SettingsRowText(
+                            title: "Include Diagnostics",
+                            subtitle: "Attach logs to reports"
+                        )
                     }
+                    .tint(.blue)
 
-                    settingsRow(title: "Describe the Issue") {
-                        TextEditor(text: $description)
-                            .frame(minHeight: 90, maxHeight: 110)
-                            .padding(6)
-                            .background(
-                                RoundedRectangle(cornerRadius: AppTheme.Radius.md)
-                                    .fill(AppTheme.Colors.primary.opacity(0.08))
-                            )
-                            .frame(maxWidth: 200)
+                    Button {
+                        print("Compare")
+                    } label: {
+                        SettingsRowText(
+                            title: "Notifications",
+                            subtitle: "Manage alerts"
+                        )
                     }
-
-                    Spacer(minLength: 80)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
+
+                Section(header: SettingsSectionHeader(title: "Describe the Issue")) {
+                    TextEditor(text: $description)
+                        .frame(minHeight: 100)
+                        .padding(6)
+                        .background(
+                            RoundedRectangle(cornerRadius: AppTheme.Radius.md)
+                                .fill(AppTheme.Colors.primary.opacity(0.08))
+                        )
+                }
             }
         }
     }
@@ -109,23 +108,16 @@ struct SettingsAboutView: View {
 
     var body: some View {
         SettingsScaffold(title: "About Ocula") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.md) {
-                    settingsRow(title: "Version") {
+            SettingsList {
+                Section {
+                    LabeledContent("Version") {
                         Text("1.0.0")
                             .captionStyle()
                     }
 
-                    settingsRow(title: "Enable Beta Features") {
-                        Toggle("", isOn: $betaFeatures)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
-
-                    Spacer(minLength: 80)
+                    Toggle("Enable Beta Features", isOn: $betaFeatures)
+                        .tint(.blue)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }

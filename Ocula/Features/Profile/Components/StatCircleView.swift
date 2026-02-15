@@ -23,17 +23,21 @@ struct StatCircleView: View {
         isPrimary ? 0.90 : 0.80
     }
 
+    private var contentColor: Color {
+        isPrimary ? .white : AppTheme.Colors.primary
+    }
+
     var body: some View {
         VStack(spacing: AppTheme.Spacing.xs) {
 
             Image(systemName: icon)
-                .foregroundColor(.white)
+                .foregroundColor(contentColor)
                 .font(.system(size: size * 0.18 * scale))
 
             // Animated number
             Text("")
                 .modifier(CountingText(value: animatedValue))
-                .foregroundColor(.white)
+                .foregroundColor(contentColor)
                 .font(.system(
                     size: size * 0.36 * scale,
                     weight: .bold

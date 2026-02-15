@@ -15,4 +15,15 @@ struct AppUser: Identifiable, Codable {
     let lastLogin: Date
     let accountType: String
     let onboardingComplete: Bool
+    let driverNickname: String?
+    let vehicleNickname: String?
+    let vehiclePlate: String?
+    let vehiclePlateStyle: String?
+    let vehiclePlateSize: String?
+    let vehiclePlateTextColorHex: String?
+    let vehiclePlateBackgroundColorHex: String?
+    let vehiclePlateBorderColorHex: String?
+    let vehiclePlateBorderWidth: Double?
+    let vehicleBrand: String?
+    let vehicleColorHex: String?
 }

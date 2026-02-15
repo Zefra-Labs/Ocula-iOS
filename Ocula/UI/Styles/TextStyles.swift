@@ -55,6 +55,6 @@ struct CaptionText: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(AppTheme.Fonts.medium(13))
-            .foregroundColor(.gray)
+            .foregroundColor(AppTheme.Colors.secondary)
     }
 }

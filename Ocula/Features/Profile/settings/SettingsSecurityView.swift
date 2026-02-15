@@ -10,33 +10,32 @@ import SwiftUI
 struct SettingsSecurityView: View {
     var body: some View {
         SettingsScaffold(title: "Privacy & Security") {
-            ScrollView {
-                VStack(spacing: 12) {
+            SettingsList {
+                Section {
                     actionRow(
                         icon: "hand.raised.fill",
                         title: "Privacy",
                         subtitle: "Control what data is shared",
-                        destination: AnyView(SettingsPrivacyView())
+                        destination: AnyView(SettingsPrivacyView()),
+                        style: .list
                     )
 
                     actionRow(
                         icon: "lock.shield.fill",
                         title: "Security",
                         subtitle: "Password and login settings",
-                        destination: AnyView(SettingsSecurityDetailView())
+                        destination: AnyView(SettingsSecurityDetailView()),
+                        style: .list
                     )
 
                     actionRow(
                         icon: "location.fill",
                         title: "Permissions",
                         subtitle: "Location, camera, and motion",
-                        destination: AnyView(SettingsPermissionsView())
+                        destination: AnyView(SettingsPermissionsView()),
+                        style: .list
                     )
-
-                    Spacer(minLength: 80)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }
@@ -48,24 +47,14 @@ struct SettingsPrivacyView: View {
 
     var body: some View {
         SettingsScaffold(title: "Privacy") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.md) {
-                    settingsRow(title: "Share Diagnostics") {
-                        Toggle("", isOn: $shareDiagnostics)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
+            SettingsList {
+                Section {
+                    Toggle("Share Diagnostics", isOn: $shareDiagnostics)
+                        .tint(.blue)
 
-                    settingsRow(title: "Cloud Backups") {
-                        Toggle("", isOn: $cloudBackups)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
-
-                    Spacer(minLength: 80)
+                    Toggle("Cloud Backups", isOn: $cloudBackups)
+                        .tint(.blue)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }
@@ -77,24 +66,16 @@ struct SettingsSecurityDetailView: View {
 
     var body: some View {
         SettingsScaffold(title: "Security") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.md) {
-                    settingsRow(title: "Use Face ID") {
-                        Toggle("", isOn: $faceId)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
+            SettingsList {
+                Section(footer: Text("Understand what data and information the Ocula app collects by reading the Terms of Use and Privacy Policy.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)) {
+                    Toggle("Use Face ID", isOn: $faceId)
+                        .tint(.blue)
 
-                    settingsRow(title: "Require Passcode") {
-                        Toggle("", isOn: $requirePasscode)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
-
-                    Spacer(minLength: 80)
+                    Toggle("Require Passcode", isOn: $requirePasscode)
+                        .tint(.blue)
                 }
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }
@@ -107,35 +88,21 @@ struct SettingsPermissionsView: View {
 
     var body: some View {
         SettingsScaffold(title: "Permissions") {
-            ScrollView {
-                VStack(spacing: AppTheme.Spacing.md) {
-                    settingsRow(title: "Location Access") {
-                        Picker("Location Access", selection: $locationAccess) {
-                            Text("Always").tag(0)
-                            Text("While Using").tag(1)
-                            Text("Never").tag(2)
-                        }
-                        .pickerStyle(.segmented)
-                        .frame(maxWidth: 220)
+            SettingsList {
+                Section {
+                    Picker("Location Access", selection: $locationAccess) {
+                        Text("Always").tag(0)
+                        Text("While Using").tag(1)
+                        Text("Never").tag(2)
                     }
+                    .pickerStyle(.segmented)
 
-                    settingsRow(title: "Camera") {
-                        Toggle("", isOn: $cameraAccess)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
+                    Toggle("Camera", isOn: $cameraAccess)
+                        .tint(.blue)
 
-                    settingsRow(title: "Motion & Fitness") {
-                        Toggle("", isOn: $motionAccess)
-                            .labelsHidden()
-                            .tint(.blue)
-                    }
-
-                    Spacer(minLength: 80)
+                    Toggle("Motion & Fitness", isOn: $motionAccess)
+                        .tint(.blue)
                 }
-
-                .padding(.top, AppTheme.Spacing.sm)
-                .padding(.horizontal, AppTheme.Spacing.md)
             }
         }
     }
