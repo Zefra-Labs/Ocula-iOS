@@ -18,6 +18,12 @@ struct AppUser: Identifiable, Codable {
     let driverNickname: String?
     let vehicleNickname: String?
     let vehiclePlate: String?
+    let vehiclePlateStyle: String?
+    let vehiclePlateSize: String?
+    let vehiclePlateTextColorHex: String?
+    let vehiclePlateBackgroundColorHex: String?
+    let vehiclePlateBorderColorHex: String?
+    let vehiclePlateBorderWidth: Double?
     let vehicleBrand: String?
     let vehicleColorHex: String?
 }

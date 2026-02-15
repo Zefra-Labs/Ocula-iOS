@@ -62,6 +62,12 @@ final class SessionManager: ObservableObject {
                 driverNickname: nil,
                 vehicleNickname: nil,
                 vehiclePlate: nil,
+                vehiclePlateStyle: nil,
+                vehiclePlateSize: nil,
+                vehiclePlateTextColorHex: nil,
+                vehiclePlateBackgroundColorHex: nil,
+                vehiclePlateBorderColorHex: nil,
+                vehiclePlateBorderWidth: nil,
                 vehicleBrand: nil,
                 vehicleColorHex: nil
             )

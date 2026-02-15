@@ -16,6 +16,12 @@ struct SettingsCarView: View {
     @State private var driverNickname: String = ""
     @State private var vehicleNickname: String = ""
     @State private var vehiclePlate: String = ""
+    @State private var plateTemplate: LicensePlateTemplate = .american
+    @State private var plateSize: LicensePlateSize = .standard
+    @State private var plateTextColor: Color = .black
+    @State private var plateBackgroundColor: Color = .white
+    @State private var plateBorderColor: Color = Color(.systemGray3)
+    @State private var plateBorderWidth: Double = 2
     @State private var selectedBrand: CarBrand = .bmw
     @State private var customBrand: String = ""
     @State private var vehicleColor: Color = Color(hex: "2563EB") ?? .blue
@@ -23,6 +29,7 @@ struct SettingsCarView: View {
     @State private var saveMessage: String? = nil
     @State private var showSuccessSheet = false
     @State private var animateIcon = false
+    @State private var didLoad = false
 
     var body: some View {
         
@@ -32,35 +39,82 @@ struct SettingsCarView: View {
                     TextField("Driver nickname", text: $driverNickname)
                 }
 
-                Section(header: SettingsSectionHeader(title: "Vehicle")) {
-                    TextField("Vehicle nickname", text: $vehicleNickname)
-                    
-                    TextField("License plate", text: $vehiclePlate)
-
-                    Picker("Car Brand", selection: $selectedBrand) {
+                Section(header: SettingsSectionHeader(title: "Vehicle Details")) {
+                    HStack {
+                        Text("Nickname")
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        TextField("Enter nickname", text: $vehicleNickname)
+                            .multilineTextAlignment(.trailing)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Section(header: SettingsSectionHeader(title: "Licence Plate")) {
+                    NavigationLink {
+                        SettingsLicensePlateView(
+                            vehiclePlate: $vehiclePlate,
+                            plateTemplate: $plateTemplate,
+                            plateSize: $plateSize,
+                            plateTextColor: $plateTextColor,
+                            plateBackgroundColor: $plateBackgroundColor,
+                            plateBorderColor: $plateBorderColor,
+                            plateBorderWidth: $plateBorderWidth
+                        )
+                    } label: {
+                        HStack {
+                            Text("Plate Details")
+                                .foregroundStyle(.primary)
+                            Spacer()
+                            Text(plateTemplate.rawValue)
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                        }
+                    }
+                }
+                Section(header: SettingsSectionHeader(title: "Vehicle Brand")) {
+                    Picker("Brand", selection: $selectedBrand) {
                         ForEach(brandOptions) { brand in
                             Text(brand.rawValue).tag(brand)
                         }
                     }
                     .pickerStyle(.navigationLink)
-
+                    
                     if selectedBrand == .other {
-                        TextField("Custom brand", text: $customBrand)
+                        HStack {
+                            Text("Other")
+                                .foregroundStyle(.primary)
+                            Spacer()
+                            TextField("Enter custom brand", text: $customBrand)
+                                .multilineTextAlignment(.trailing)
+                                .foregroundStyle(.secondary)
+                        }
                     }
+                }
+                Section(header: SettingsSectionHeader(title: "Vehicle Appearance")) {
 
-                    ColorPicker("Car Color", selection: $vehicleColor, supportsOpacity: false)
+                    ColorPicker("Color", selection: $vehicleColor, supportsOpacity: false)
                 }
 
-                Section {
-                    Button(isSaving ? "Saving..." : "Save Changes") {
-                        saveProfilePreferences()
-                    }
-                    .buttonStyle(PrimaryButtonStyle())
-                    .disabled(isSaving)
-                }
-                
             }
-            .onAppear(perform: loadCurrentValues)
+            .onAppear {
+                if !didLoad {
+                    loadCurrentValues()
+                    didLoad = true
+                }
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(isSaving ? "" : "Save") {
+                    saveProfilePreferences()
+                }
+                .disabled(isSaving)
+                .overlay(alignment: .trailing) {
+                    if isSaving {
+                        ProgressView()
+                    }
+                }
+            }
         }
         .oculaAlertSheet(
             isPresented: $showSuccessSheet,
@@ -89,6 +143,36 @@ private extension SettingsCarView {
         driverNickname = session.user?.driverNickname ?? "Night Runner"
         vehicleNickname = session.user?.vehicleNickname ?? "Midnight Coupe"
         vehiclePlate = session.user?.vehiclePlate ?? ""
+        if let storedStyle = session.user?.vehiclePlateStyle,
+           let resolvedStyle = LicensePlateTemplate(rawValue: storedStyle) {
+            plateTemplate = resolvedStyle
+        }
+        if let storedSize = session.user?.vehiclePlateSize,
+           let resolvedSize = LicensePlateSize(rawValue: storedSize) {
+            plateSize = resolvedSize
+        }
+        plateTextColor = {
+            if let textHex = session.user?.vehiclePlateTextColorHex,
+               let textColor = Color(hex: textHex) {
+                return textColor
+            }
+            return plateTemplate.defaultTextColor
+        }()
+        plateBackgroundColor = {
+            if let backgroundHex = session.user?.vehiclePlateBackgroundColorHex,
+               let backgroundColor = Color(hex: backgroundHex) {
+                return backgroundColor
+            }
+            return plateTemplate.defaultBackgroundColor
+        }()
+        plateBorderColor = {
+            if let borderHex = session.user?.vehiclePlateBorderColorHex,
+               let borderColor = Color(hex: borderHex) {
+                return borderColor
+            }
+            return plateTemplate.defaultBorderColor
+        }()
+        plateBorderWidth = session.user?.vehiclePlateBorderWidth ?? plateTemplate.defaultBorderWidth
 
         if let brand = session.user?.vehicleBrand {
             if let matched = CarBrand(rawValue: brand) {
@@ -124,6 +208,12 @@ private extension SettingsCarView {
             "driverNickname": driverNickname,
             "vehicleNickname": vehicleNickname,
             "vehiclePlate": vehiclePlate,
+            "vehiclePlateStyle": plateTemplate.rawValue,
+            "vehiclePlateSize": plateSize.rawValue,
+            "vehiclePlateTextColorHex": colorHex(from: plateTextColor),
+            "vehiclePlateBackgroundColorHex": colorHex(from: plateBackgroundColor),
+            "vehiclePlateBorderColorHex": colorHex(from: plateBorderColor),
+            "vehiclePlateBorderWidth": plateBorderWidth,
             "vehicleBrand": brandToStore,
             "vehicleColorHex": colorHex(from: vehicleColor)
         ]

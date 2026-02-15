@@ -7,9 +7,9 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseCore
 import FirebaseFirestore
 import Combine
-import GoogleSignInSwift
 import GoogleSignIn
 
 @MainActor
@@ -141,6 +141,12 @@ final class AuthViewModel: ObservableObject {
                 driverNickname: nil,
                 vehicleNickname: nil,
                 vehiclePlate: nil,
+                vehiclePlateStyle: nil,
+                vehiclePlateSize: nil,
+                vehiclePlateTextColorHex: nil,
+                vehiclePlateBackgroundColorHex: nil,
+                vehiclePlateBorderColorHex: nil,
+                vehiclePlateBorderWidth: nil,
                 vehicleBrand: nil,
                 vehicleColorHex: nil
             )
@@ -195,9 +201,8 @@ final class AuthViewModel: ObservableObject {
         showLoadingSheet = true
         isLoading = true
 
-        let provider = OAuthProvider(providerID: "google.com")
         do {
-            _ = try await signIn(with: provider)
+            try await signInWithGoogleSDK()
             isLoading = false
             showLoadingSheet = false
             successTitle = "Signed In"
@@ -213,20 +218,27 @@ final class AuthViewModel: ObservableObject {
         }
     }
 
-    private func signIn(with provider: OAuthProvider) async throws -> AuthDataResult {
-        try await withCheckedThrowingContinuation { continuation in
-            Auth.auth().signIn(with: provider, uiDelegate: nil) { result, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                    return
-                }
-                if let result {
-                    continuation.resume(returning: result)
-                    return
-                }
-                continuation.resume(throwing: NSError(domain: "OculaAuth", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unable to sign in."]))
-            }
+    private func signInWithGoogleSDK() async throws {
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            throw GoogleAuthError.missingClientID
         }
+
+        guard let presenter = UIApplication.shared.topMostViewController() else {
+            throw GoogleAuthError.missingPresenter
+        }
+
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+
+        let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: presenter)
+
+        guard let idToken = result.user.idToken?.tokenString else {
+            throw GoogleAuthError.missingIDToken
+        }
+
+        let accessToken = result.user.accessToken.tokenString
+        let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
+        _ = try await Auth.auth().signIn(with: credential)
     }
 
     private func deriveDisplayName(from email: String) -> String {
@@ -287,5 +299,43 @@ final class AuthViewModel: ObservableObject {
         errorTitle = title
         errorMessage = message
         showErrorSheet = true
+    }
+}
+
+private enum GoogleAuthError: LocalizedError {
+    case missingClientID
+    case missingPresenter
+    case missingIDToken
+
+    var errorDescription: String? {
+        switch self {
+        case .missingClientID:
+            return "Missing Firebase client ID. Check GoogleService-Info.plist."
+        case .missingPresenter:
+            return "Could not find a view controller to present sign-in."
+        case .missingIDToken:
+            return "Google sign-in returned no ID token."
+        }
+    }
+}
+
+private extension UIApplication {
+    func topMostViewController(base: UIViewController? = nil) -> UIViewController? {
+        let baseVC = base ?? connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }?
+            .rootViewController
+
+        if let nav = baseVC as? UINavigationController {
+            return topMostViewController(base: nav.visibleViewController)
+        }
+        if let tab = baseVC as? UITabBarController, let selected = tab.selectedViewController {
+            return topMostViewController(base: selected)
+        }
+        if let presented = baseVC?.presentedViewController {
+            return topMostViewController(base: presented)
+        }
+        return baseVC
     }
 }

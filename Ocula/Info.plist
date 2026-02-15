@@ -13,5 +13,9 @@
 			</array>
 		</dict>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>LicensePlate-j9eO.ttf</string>
+	</array>
 </dict>
 </plist>
