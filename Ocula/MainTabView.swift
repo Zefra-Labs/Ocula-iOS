@@ -20,7 +20,7 @@ struct MainTabView: View {
                 .tabItem { Image(systemName: "car.fill") }
 
             ClipsView()
-                .tabItem { Image(systemName: "folder.fill") }
+                .tabItem { Image("custom.play.rectangle.stack") }
 
             TripsView()
                 .tabItem { Image(systemName: "point.topleft.filled.down.to.point.bottomright.curvepath") }

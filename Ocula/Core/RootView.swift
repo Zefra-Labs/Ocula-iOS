@@ -12,6 +12,8 @@ import FirebaseAuth
 struct RootView: View {
 
     @StateObject private var session = SessionManager()
+    @AppStorage(DebugSettings.shakeToDebugEnabledKey) private var shakeToDebugEnabled = true
+    @State private var showDebugReportSheet = false
 
   //  var body: some View {
   //      MainTabView()
@@ -29,5 +31,17 @@ struct RootView: View {
             }
         }
         .environmentObject(session)
+        .preferredColorScheme(.dark)
+        .background(
+            ShakeDetectorView {
+                guard shakeToDebugEnabled, !showDebugReportSheet else { return }
+                showDebugReportSheet = true
+            }
+        )
+        .sheet(isPresented: $showDebugReportSheet) {
+            DebugReportSheet()
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+        }
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct RotatingLoadingView: View {
     private let size: CGFloat = 50
-    private let duration: Double = 1.0
+    private let duration: Double = 0.7
 
     @State private var angle: Double = 0
 

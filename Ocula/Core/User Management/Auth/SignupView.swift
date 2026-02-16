@@ -105,6 +105,10 @@ struct SignUpView: View {
                     .foregroundStyle(AppTheme.Colors.secondary)
             }
             .buttonStyle(.plain)
+            Rectangle()
+                .fill(AppTheme.Colors.secondary.opacity(0.25))
+                .frame(height: 1)
+            TermsConditionsLinkConsent()
         }
         .padding(.bottom, AppTheme.Spacing.xxl)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -146,6 +150,7 @@ struct SignUpView: View {
         showValidation = true
         guard viewModel.isEmailValid else { return }
         viewModel.clearErrors()
+        showValidation = false
         withAnimation(.spring(response: 0.45, dampingFraction: 0.9)) {
             step = .password
         }

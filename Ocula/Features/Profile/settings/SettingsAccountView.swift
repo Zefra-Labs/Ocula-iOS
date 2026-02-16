@@ -6,20 +6,31 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 
 struct SettingsAccountView: View {
+    @EnvironmentObject var session: SessionManager
+
+    @StateObject private var viewModel = ProfileViewModel()
+    @State private var selectedRange: ProfileTimeRange = .last7Days
+    @State private var breakdownSheetMetric: DrivingMetric? = nil
+    @State private var achievementSheetItem: Achievement? = nil
+    
     var body: some View {
         SettingsScaffold(title: "Account") {
             SettingsList {
                 Section {
                     actionRow(
                         icon: "person.crop.circle",
-                        title: "Profile Info",
+                        title: "Email Info",
                         subtitle: "Update your name and photo",
                         destination: AnyView(SettingsProfileInfoView()),
                         style: .list
                     )
-
+                }
+                Section {
                     actionRow(
                         icon: "envelope.fill",
                         title: "Email",
@@ -27,7 +38,8 @@ struct SettingsAccountView: View {
                         destination: AnyView(SettingsEmailView()),
                         style: .list
                     )
-
+                }
+                Section {
                     actionRow(
                         icon: "ipad.and.iphone",
                         title: "Devices",
@@ -39,8 +51,33 @@ struct SettingsAccountView: View {
             }
         }
     }
-}
+    var driverNickname: String {
+        session.user?.driverNickname ?? "Ocula Driver"
+    }
+    var userDisplayName: String {
+        session.user?.displayName
+        ?? Auth.auth().currentUser?.displayName
+        ?? "Anonymous"
+    }
 
+    var userImageURL: String? {
+        Auth.auth().currentUser?.photoURL?.absoluteString
+    }
+
+    var userEmail: String {
+        session.user?.email
+        ?? Auth.auth().currentUser?.email
+        ?? "hello@ocula.app"
+    }
+    var profileHeaderCard: some View {
+        ProfileHeaderCardView(
+            driverNickname: driverNickname,
+            email: userEmail,
+            totalHours: "\(viewModel.stats.totalHoursDriven)h",
+            imageURL: userImageURL
+        )
+    }
+}
 struct SettingsProfileInfoView: View {
     @State private var displayName = "Ocula Driver"
     @State private var bio = "Night drives, clean footage."
@@ -73,6 +110,7 @@ struct SettingsProfileInfoView: View {
     }
 }
 
+
 struct SettingsEmailView: View {
     @State private var email = "driver@ocula.app"
     @State private var marketingEmails = false
@@ -89,25 +127,6 @@ struct SettingsEmailView: View {
                     }
 
                     Toggle("Product Updates", isOn: $marketingEmails)
-                        .tint(.blue)
-                }
-            }
-        }
-    }
-}
-
-struct SettingsDevicesView: View {
-    @State private var crashDetection = true
-    @State private var autoSync = true
-
-    var body: some View {
-        SettingsScaffold(title: "Devices") {
-            SettingsList {
-                Section {
-                    Toggle("Crash Detection Alerts", isOn: $crashDetection)
-                        .tint(.blue)
-
-                    Toggle("Auto Sync Footage", isOn: $autoSync)
                         .tint(.blue)
                 }
             }

@@ -261,21 +261,18 @@ struct TermsConditionsLinkConsent: View {
         Button {
             isShowingLegal = true
         } label: {
-            VStack(alignment: .center, spacing: 4) {
-                Text("By continuing, you agree to our")
+            VStack(alignment: .leading, spacing: 4) {
+                Text("By continuing, you agree to our \(legalAttributedText)")
                     .font(AppTheme.Fonts.semibold(12))
                     .foregroundStyle(AppTheme.Colors.secondary)
-
-                Text(legalAttributedText)
-                .foregroundStyle(AppTheme.Colors.secondary)
             }
-            .frame(maxWidth: .infinity, alignment: .center)
-            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .multilineTextAlignment(.leading)
         }
         .buttonStyle(.plain)
         .contentShape(Rectangle())
         .sheet(isPresented: $isShowingLegal) {
-            SafariWebView(url: URL(string: "https://milescomedia.com.au/legal")!)
+            SafariWebView(url: URL(string: "https://zefra.au/ocula/legal")!)
         }
     }
 }

@@ -13,6 +13,10 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow microphone access to capture your voice for debug dictation.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Allow speech recognition so you can describe what went wrong using your voice.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>LicensePlate-j9eO.ttf</string>

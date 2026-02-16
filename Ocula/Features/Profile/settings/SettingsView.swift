@@ -12,6 +12,8 @@ struct SettingsView: View {
 
     @EnvironmentObject var session: SessionManager
     @State private var animateIcon = false
+    @StateObject private var devicesViewModel = DevicesViewModel()
+    @AppStorage(DebugSettings.shakeToDebugEnabledKey) private var shakeToDebugEnabled = true
 
     var body: some View {
         SettingsScaffold(title: "Settings") {
@@ -39,6 +41,19 @@ struct SettingsView: View {
             },
             iconAnimationActive: animateIcon
         )
+        .onAppear {
+            if let uid = currentUserId {
+                devicesViewModel.startListening(uid: uid)
+            }
+        }
+        .onChange(of: currentUserId) { newValue in
+            if let uid = newValue {
+                devicesViewModel.startListening(uid: uid)
+            }
+        }
+        .onDisappear {
+            devicesViewModel.stopListening()
+        }
     }
 }
 
@@ -70,7 +85,7 @@ private extension SettingsView {
                 )
                 
             }
-            Section(header: SettingsSectionHeader(title: "Trips & Devices")) {
+            Section(header: SettingsSectionHeader(title: "Trips")) {
                 actionRow(
                     icon: "point.topright.filled.arrow.triangle.backward.to.point.bottomleft.scurvepath",
                     title: "Trips",
@@ -78,12 +93,24 @@ private extension SettingsView {
                     destination: AnyView(SettingsAccountView()),
                     style: .list
                 )
+            }
+
+            Section(header: SettingsSectionHeader(title: "Devices"), footer: Text("This feature is currently still in development.")
+                .font(.footnote)) {
+                if devicesViewModel.linkedDevices.isEmpty {
+                    Text("No devices linked yet.")
+                        .captionStyle()
+                } else {
+                    ForEach(devicesViewModel.linkedDevices.prefix(2)) { device in
+                        DeviceSummaryRow(device: device)
+                    }
+                }
 
                 actionRow(
                     icon: "car.fill",
-                    title: "Devices",
-                    subtitle: "Manage, add or remove Ocula devices connected to your account ",
-                    destination: AnyView(SettingsSecurityView()),
+                    title: "Manage Devices",
+                    subtitle: "Add or remove Ocula devices connected to your account",
+                    destination: AnyView(SettingsDevicesView()),
                     style: .list
                 )
             }
@@ -96,6 +123,9 @@ private extension SettingsView {
                     destination: AnyView(SettingsCarView()),
                     style: .list
                 )
+
+                Toggle("Shake to Debug", isOn: $shakeToDebugEnabled)
+                    .tint(.blue)
             }
             Section(header: SettingsSectionHeader(title: "Emergency SOS")) {
                 actionRow(
@@ -166,6 +196,30 @@ private extension SettingsView {
 
     var userImageURL: String? {
         Auth.auth().currentUser?.photoURL?.absoluteString
+    }
+
+    var currentUserId: String? {
+        session.user?.id ?? Auth.auth().currentUser?.uid
+    }
+}
+
+private struct DeviceSummaryRow: View {
+    let device: LinkedDevice
+
+    var body: some View {
+        HStack(spacing: 16) {
+            Image(systemName: "camera.fill")
+                .title2Style()
+                .foregroundColor(AppTheme.Colors.primary)
+                .frame(width: 25)
+
+            SettingsRowText(
+                title: device.displayName,
+                subtitle: device.summaryLine
+            )
+
+            Spacer()
+        }
     }
 }
 

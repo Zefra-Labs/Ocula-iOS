@@ -36,13 +36,13 @@
 				<key>focused</key>
 				<string></string>
 				<key>leading</key>
-				<string>            iconAnimationActive: animateIcon
-        )
-    }</string>
+				<string>                }
+            },
+     </string>
 				<key>trailing</key>
-				<string>
-}
-
+				<string>       iconAnimationActive: animateIcon
+        )
+        .onAppear {
 </string>
 			</dict>
 			<key>title</key>
@@ -127,16 +127,16 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>                    destination: AnyView(SettingsSecurityView()),
+				<string>                
 </string>
 				<key>leading</key>
-				<string>                    title: "Devices",
-                    subtitle: "Manage, add or remove Ocula devices connected to your account ",
-</string>
-				<key>trailing</key>
 				<string>                    style: .list
                 )
-            }
+</string>
+				<key>trailing</key>
+				<string>            }
+            Section(header: SettingsSectionHeader(title: "Trips")) {
+                actionRow(
 </string>
 			</dict>
 			<key>type</key>
@@ -172,16 +172,16 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>                    destination: AnyView(SettingsAccountView()),
+				<string>                )
 </string>
 				<key>leading</key>
-				<string>                    title: "Trips",
-                    subtitle: "Manage preferences and settings for trips that your Ocula records",
+				<string>                    destination: AnyView(SettingsSecurityView()),
+                    style: .list
 </string>
 				<key>trailing</key>
-				<string>                    style: .list
-                )
-
+				<string>                actionRow(
+                    icon: "bell.fill",
+                    title: "Notifications",
 </string>
 			</dict>
 			<key>type</key>
@@ -217,16 +217,16 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>                    destination: AnyView(SettingsSecurityView()),
+				<string>
 </string>
 				<key>leading</key>
-				<string>                    title: "Privacy &amp; Security",
-                    subtitle: "Manage your account's priavacy, security and data controls",
+				<string>
+private extension SettingsView {
 </string>
 				<key>trailing</key>
-				<string>                    style: .list
-                )
-                actionRow(
+				<string>    var settingsActions: some View {
+        SettingsList {
+            Section(header: SettingsSectionHeader(title: "Account")) {
 </string>
 			</dict>
 			<key>type</key>
@@ -262,16 +262,16 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>                    destination: AnyView(SettingsSecurityView()),
+				<string>                    subtitle: "Manage your profile and account info like email, nickname, and more",
 </string>
 				<key>leading</key>
-				<string>                    title: "Notifications",
-                    subtitle: "Manage your account's push notification preferences",
+				<string>                    icon: "person.fill",
+                    title: "Profile",
 </string>
 				<key>trailing</key>
-				<string>                    style: .list
+				<string>                    destination: AnyView(SettingsAccountView()),
+                    style: .list
                 )
-                
 </string>
 			</dict>
 			<key>type</key>
@@ -285,13 +285,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>105</string>
+					<string>106</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>104</string>
+					<string>105</string>
 					<key>Timestamp</key>
-					<string>792662886.96445</string>
+					<string>792850400.4660439</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -307,60 +307,106 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>                    destination: AnyView(SettingsSecurityView()),
+				<string>                    }
 </string>
 				<key>leading</key>
-				<string>                    title: "Emergency SOS",
-                    subtitle: "Manage preferences for your Ocula's Emergency SOS system",
+				<string>                    ForEach(devicesViewModel.linkedDevices.prefix(2)) { device in
+                        DeviceSummaryRow(device: device)
 </string>
 				<key>trailing</key>
+				<string>                }
+
+                actionRow(
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>0</string>
+					<key>EndingLineNumber</key>
+					<string>116</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>115</string>
+					<key>Timestamp</key>
+					<string>792850400.466048</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Ocula/Features/Profile/settings/SettingsView.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>            }
+</string>
+				<key>leading</key>
 				<string>                    style: .list
                 )
+</string>
+				<key>trailing</key>
+				<string>
+            Section(header: SettingsSectionHeader(title: "App Settings")) {
+                actionRow(
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>0</string>
+					<key>EndingLineNumber</key>
+					<string>130</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>129</string>
+					<key>Timestamp</key>
+					<string>792850400.466028</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Ocula/Features/Profile/settings/SettingsView.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>            Section(header: SettingsSectionHeader(title: "Emergency SOS")) {
+</string>
+				<key>leading</key>
+				<string>                    .tint(.blue)
             }
 </string>
-			</dict>
-			<key>type</key>
-			<string>bookmark</string>
-		</dict>
-		<dict>
-			<key>destination</key>
-			<dict>
-				<key>location-parameters</key>
-				<dict>
-					<key>EndingColumnNumber</key>
-					<string>64</string>
-					<key>EndingLineNumber</key>
-					<string>114</string>
-					<key>StartingColumnNumber</key>
-					<string>64</string>
-					<key>StartingLineNumber</key>
-					<string>114</string>
-					<key>Timestamp</key>
-					<string>792663022.04764</string>
-				</dict>
-				<key>rebasable-url</key>
-				<dict>
-					<key>base</key>
-					<string>workspace</string>
-					<key>payload</key>
-					<dict>
-						<key>relative-path</key>
-						<string>Ocula/Features/Profile/settings/SettingsView.swift</string>
-					</dict>
-				</dict>
-			</dict>
-			<key>text-context</key>
-			<dict>
-				<key>focused</key>
-				<string></string>
-				<key>leading</key>
-				<string>                    title: "User Guides",
-                    subtitle: "Search and view user guides and manuals for any Ocula device",
-                    destination: AnyView(SettingsAccountView()),</string>
 				<key>trailing</key>
-				<string>
-                    style: .list
-                )
+				<string>                actionRow(
+                    icon: "sos.circle.fill",
+                    title: "Emergency SOS",
 </string>
 			</dict>
 			<key>type</key>
@@ -372,15 +418,15 @@
 				<key>location-parameters</key>
 				<dict>
 					<key>EndingColumnNumber</key>
-					<string>62</string>
+					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>128</string>
+					<string>123</string>
 					<key>StartingColumnNumber</key>
-					<string>62</string>
+					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>128</string>
+					<string>122</string>
 					<key>Timestamp</key>
-					<string>792663641.002501</string>
+					<string>792850400.4660389</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -396,59 +442,16 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string></string>
-				<key>leading</key>
-				<string>                    title: "Legal Information",
-                    subtitle: "View the Ocula Privacy Policy, Terms of Service and other legal information",
-                    destination: AnyView(SettingsLegalView()),</string>
-				<key>trailing</key>
-				<string>
-                    style: .list
-                )
+				<string>                    destination: AnyView(SettingsCarView()),
 </string>
-			</dict>
-			<key>type</key>
-			<string>bookmark</string>
-		</dict>
-		<dict>
-			<key>destination</key>
-			<dict>
-				<key>location-parameters</key>
-				<dict>
-					<key>EndingColumnNumber</key>
-					<string>65</string>
-					<key>EndingLineNumber</key>
-					<string>121</string>
-					<key>StartingColumnNumber</key>
-					<string>65</string>
-					<key>StartingLineNumber</key>
-					<string>121</string>
-					<key>Timestamp</key>
-					<string>792663303.654178</string>
-				</dict>
-				<key>rebasable-url</key>
-				<dict>
-					<key>base</key>
-					<string>workspace</string>
-					<key>payload</key>
-					<dict>
-						<key>relative-path</key>
-						<string>Ocula/Features/Profile/settings/SettingsView.swift</string>
-					</dict>
-				</dict>
-			</dict>
-			<key>text-context</key>
-			<dict>
-				<key>focused</key>
-				<string></string>
 				<key>leading</key>
-				<string>                    title: "App Information",
-                    subtitle: "View app information, version information and debug information",
-                    destination: AnyView(SettingsSecurityView()),</string>
+				<string>                    title: "Car",
+                    subtitle: "Driver, vehicle, and color",
+</string>
 				<key>trailing</key>
-				<string>
-                    style: .list
+				<string>                    style: .list
                 )
+
 </string>
 			</dict>
 			<key>type</key>
@@ -587,6 +590,25 @@
         if plateTemplate == .euro {
             VStack(spacing: 6) {
 </string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Ocula/Features/Profile/settings/SettingsAccountView.swift</string>
+					</dict>
+				</dict>
+				<key>type</key>
+				<string>DVTDocumentLocation</string>
 			</dict>
 			<key>type</key>
 			<string>bookmark</string>

@@ -225,7 +225,7 @@ private struct AuthLandingView: View {
 
             }
 
-            Text("Your intelligent driving companion.")
+            Text("Your intelligent dashcam companion.")
                 .font(AppTheme.Fonts.regular(16))
                 .foregroundStyle(AppTheme.Colors.secondary)
 
@@ -238,12 +238,14 @@ private struct AuthLandingView: View {
 
                 AuthDivider()
                     .padding(.vertical, 6)
-
+                
                 Button(action: onGoogle) {
                     HStack(spacing: 12) {
                         Spacer()
-                        Image(systemName: "globe")
-                            .frame(width: 22, height: 22)
+                        Image("googleLogo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
                         Text("Continue with Google")
                             .font(AppTheme.Fonts.semibold(15))
                         Spacer()
@@ -260,6 +262,7 @@ private struct AuthLandingView: View {
                 .buttonStyle(.plain)
             }
             .padding(.bottom, AppTheme.Spacing.xxl)
+
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

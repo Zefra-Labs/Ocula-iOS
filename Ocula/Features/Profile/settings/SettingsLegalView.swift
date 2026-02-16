@@ -23,20 +23,21 @@ struct SettingsLegalView: View {
                             subtitle: "How we collect and use your data",
                             action: {
                                 selectedLink = LegalLink(
-                                    title: "Privacy Policy",
-                                    url: URL(string: "https://milescomedia.com.au/legal/")!
+                                    title: "Privacy Overview",
+                                    url: URL(string: "https://zefra.au/legal/ocula/privacy-overview")!
                                 )
                             },
                             style: .list
                         )
+                        
                     actionRow(
                         icon: "info.circle.text.page.fill",
-                        title: "Terms of Service",
+                        title: "Terms of Use",
                         subtitle: "Terms, conditions, and acceptable use",
                         action: {
                             selectedLink = LegalLink(
-                                title: "Terms of Service",
-                                url: URL(string: "https://milescomedia.com.au/terms")!
+                                title: "Terms of Use",
+                                url: URL(string: "https://zefra.au/legal/ocula/terms")!
                             )
                         },
                         style: .list
@@ -49,8 +50,8 @@ struct SettingsLegalView: View {
                             subtitle: "",
                             action: {
                                 selectedLink = LegalLink(
-                                    title: "Privacy Policy",
-                                    url: URL(string: "https://milescomedia.com.au/legal/")!
+                                    title: "Third Party Licences",
+                                    url: URL(string: "https://zefra.au/legal/ocula/3rd-party-licences")!
                                 )
                             },
                             style: .list
@@ -61,8 +62,8 @@ struct SettingsLegalView: View {
                         subtitle: "",
                         action: {
                             selectedLink = LegalLink(
-                                title: "Privacy Policy",
-                                url: URL(string: "https://milescomedia.com.au/legal/")!
+                                title: "App Licence",
+                                url: URL(string: "https://zefra.au/legal/ocula/app-licence")!
                             )
                         },
                         style: .list
@@ -75,8 +76,8 @@ struct SettingsLegalView: View {
                             subtitle: "How your data is collected and used",
                             action: {
                                 selectedLink = LegalLink(
-                                    title: "Privacy Policy",
-                                    url: URL(string: "https://milescomedia.com.au/legal/")!
+                                    title: "Location Usage Disclosure",
+                                    url: URL(string: "https://zefra.au/legal/ocula/location-usage-disclosure")!
                                 )
                             },
                             style: .list
