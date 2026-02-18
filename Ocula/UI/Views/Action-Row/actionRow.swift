@@ -33,8 +33,9 @@ func actionRow(
         
         VStack(alignment: .leading, spacing: 2) {
             Text(title)
-                .headlineStyle()
+                .foregroundStyle(AppTheme.Colors.primary)
                 .lineLimit(1)
+                .fontWeight(.medium)
             
             Text(subtitle)
                 .captionStyle()

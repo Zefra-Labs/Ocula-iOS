@@ -38,8 +38,8 @@ struct TripRow: View {
                 Button {
                     onStar(trip)
                 } label: {
-                    Image(systemName: isStarred ? "star.fill" : "star")
-                        .foregroundStyle(isStarred ? .yellow : AppTheme.Colors.secondary)
+                    Image(systemName: isStarred ? "bookmark.fill" : "bookmark")
+                        .foregroundStyle(AppTheme.Colors.secondary)
                 }
                 .buttonStyle(.plain)
 

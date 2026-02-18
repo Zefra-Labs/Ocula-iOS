@@ -475,6 +475,8 @@
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Bluetooth is used to connect to your Ocula device.";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "Bluetooth is used to connect to your Ocula device.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is used to scan your Ocula device QR code.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Allow microphone access to capture your voice for debug dictation.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Allow speech recognition so you can describe what went wrong using your voice.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
@@ -520,6 +522,8 @@
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Bluetooth is used to connect to your Ocula device.";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "Bluetooth is used to connect to your Ocula device.";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is used to scan your Ocula device QR code.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Allow microphone access to capture your voice for debug dictation.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Allow speech recognition so you can describe what went wrong using your voice.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";

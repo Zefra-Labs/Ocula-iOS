@@ -27,9 +27,9 @@ struct TripDetailView: View {
                     clipsSection
                     safetyScoreSection
                 }
-                .padding()
-                .padding(.top, 15)
-                .glassEffect(in: RoundedRectangle(cornerRadius: AppTheme.Radius.xxlg, style: .continuous))
+                .padding(.horizontal, AppTheme.Spacing.md)
+                .padding(.top, 25)
+                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: AppTheme.Radius.xxlg, style: .continuous))
                 .offset(y: -28)
             }
         }
@@ -53,6 +53,7 @@ struct TripDetailView: View {
             Text("\(Int(trip.distanceKM)) km • \(trip.durationMinutes) mins • \(trip.endDate.relativeFormatted())")
                 .foregroundStyle(.secondary)
         }
+        .padding(.vertical, 5)
     }
 
     // MARK: - Incidents section with scroll hint chevron

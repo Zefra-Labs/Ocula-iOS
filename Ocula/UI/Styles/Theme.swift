@@ -13,6 +13,7 @@ enum AppTheme {
         static let background = Color("Background")
         static let primary = Color("Primary")
         static let secondary = Color("Secondary")
+        static let tertiary = Color("Tertiary")
         static let accent = Color("Accent")
         static let surfaceDark = Color("Dark")
         static let destructive = Color.red

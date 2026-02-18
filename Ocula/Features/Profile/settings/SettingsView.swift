@@ -137,7 +137,7 @@ private extension SettingsView {
                 )
             }
 
-            Section(header: SettingsSectionHeader(title: "")) {
+            Section() {
                 actionRow(
                     icon: "book.pages.fill",
                     title: "User Guides",
@@ -149,7 +149,7 @@ private extension SettingsView {
                     icon: "info.circle.text.page.fill",
                     title: "App Information",
                     subtitle: "View app information, version information and debug information",
-                    destination: AnyView(SettingsSecurityView()),
+                    destination: AnyView(SettingsAppInformationView()),
                     style: .list
                 )
                 actionRow(
@@ -160,7 +160,7 @@ private extension SettingsView {
                     style: .list
                 )
             }
-            Section(header: SettingsSectionHeader(title: "")) {
+            Section() {
                 actionRow(
                     icon: "rectangle.portrait.and.arrow.right",
                     iconColor: AppTheme.Colors.destructive,

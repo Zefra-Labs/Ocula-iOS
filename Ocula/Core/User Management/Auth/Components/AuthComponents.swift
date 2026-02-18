@@ -289,25 +289,15 @@ private struct SafariWebView: UIViewControllerRepresentable {
 struct PasswordRequirementsView: View {
     let password: String
 
-    private var score: CGFloat {
-        let rules = [hasMinLength]
-        let passed = rules.filter { $0 }.count
-        return CGFloat(passed) / CGFloat(rules.count)
-    }
-
     private var hasMinLength: Bool { password.count >= 6 }
+    private var progress: Double { min(Double(password.count), 6) / 6.0 }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            ZStack(alignment: .leading) {
-                Capsule()
-                    .fill(AppTheme.Colors.secondary.opacity(0.2))
-                    .frame(height: 6)
-                Capsule()
-                    .fill(AppTheme.Colors.accent)
-                    .frame(width: max(8, score * 360), height: 6)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            ProgressView(value: progress)
+                .progressViewStyle(.linear)
+                .tint(AppTheme.Colors.accent)
+                .frame(height: 6)
 
             RequirementRow(text: "At least 6 characters", satisfied: hasMinLength)
         }

@@ -29,7 +29,7 @@ struct TripsView: View {
                     )
                     .frame(height: sheetHeight(in: proxy))
                     .frame(maxWidth: .infinity)
-                    .glassEffect(in: .rect(cornerRadius: AppTheme.Radius.xxlg))
+                    .glassEffect(.regular, in: .rect(cornerRadius: AppTheme.Radius.xxlg))
                     .overlay(alignment: .top) {
                         Capsule()
                             .fill(AppTheme.Colors.secondary.opacity(0.45))

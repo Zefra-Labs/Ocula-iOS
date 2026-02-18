@@ -15,10 +15,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="oculaLogo" translatesAutoresizingMaskIntoConstraints="NO" id="uDE-x6-EmJ">
-                                <rect key="frame" x="76" y="375" width="240" height="103"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="zefraLogo" translatesAutoresizingMaskIntoConstraints="NO" id="rFu-hE-7Hr">
                                 <rect key="frame" x="154" y="741" width="85" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -34,7 +30,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="oculaLogo" width="2048" height="2048"/>
         <image name="zefraLogo" width="1500" height="350"/>
     </resources>
 </document>

@@ -11,6 +11,7 @@ struct SignUpView: View {
     enum Step {
         case email
         case password
+        case confirm
     }
 
     @EnvironmentObject var session: SessionManager
@@ -20,24 +21,30 @@ struct SignUpView: View {
     let onSwitchToLogin: () -> Void
 
     @State private var step: Step = .email
-    @State private var showValidation = false
+    @State private var showEmailValidation = false
+    @State private var showPasswordValidation = false
+    @State private var showConfirmValidation = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             VStack(alignment: .leading, spacing: 4) {
                 AuthBackButton(action: handleBack)
                     .padding(.bottom, AppTheme.Spacing.sm)
-                Text("Create An")
-                    .font(AppTheme.Fonts.semibold(20))
-                    .foregroundStyle(AppTheme.Colors.secondary)
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Create An")
+                            .font(AppTheme.Fonts.semibold(20))
+                            .foregroundStyle(AppTheme.Colors.secondary)
 
-                Text("Account")
-                    .font(AppTheme.Fonts.bold(36))
-                    .foregroundStyle(AppTheme.Colors.primary)
+                        Text("Account")
+                            .font(AppTheme.Fonts.bold(36))
+                            .foregroundStyle(AppTheme.Colors.primary)
+                    }
+
+                }
             }
 
             VStack(alignment: .leading, spacing: 0) {
-                
                 Spacer()
                 VStack(alignment: .leading, spacing: 16) {
                     if step == .email {
@@ -51,9 +58,10 @@ struct SignUpView: View {
                             error: emailError
                         )
                         .onChange(of: viewModel.email) { _ in
+                            showEmailValidation = true
                             viewModel.clearErrors()
                         }
-                    } else {
+                    } else if step == .password {
                         AuthSecureField(
                             title: "Password",
                             placeholder: "Create a password",
@@ -62,11 +70,12 @@ struct SignUpView: View {
                             error: passwordError
                         )
                         .onChange(of: viewModel.password) { _ in
+                            showPasswordValidation = true
                             viewModel.clearErrors()
                         }
 
                         PasswordRequirementsView(password: viewModel.password)
-
+                    } else {
                         AuthSecureField(
                             title: "Confirm password",
                             placeholder: "Re-enter password",
@@ -75,6 +84,7 @@ struct SignUpView: View {
                             error: confirmPasswordError
                         )
                         .onChange(of: viewModel.confirmPassword) { _ in
+                            showConfirmValidation = true
                             viewModel.clearErrors()
                         }
                     }
@@ -89,6 +99,13 @@ struct SignUpView: View {
                     isLoading: viewModel.isLoading,
                     isDisabled: !viewModel.isEmailValid,
                     action: handleContinue
+                )
+            } else if step == .password {
+                AuthPrimaryButton(
+                    title: "Continue",
+                    isLoading: viewModel.isLoading,
+                    isDisabled: !viewModel.isPasswordValid,
+                    action: handlePasswordContinue
                 )
             } else {
                 AuthPrimaryButton(
@@ -117,47 +134,71 @@ struct SignUpView: View {
     }
 
     private var emailError: String? {
-        if showValidation && !viewModel.isEmailValid {
+        if showEmailValidation && !viewModel.isEmailValid {
             return "Enter a valid email address."
         }
         return nil
     }
 
     private var passwordError: String? {
-        if showValidation && !viewModel.isPasswordValid {
+        if showPasswordValidation && !viewModel.isPasswordValid {
             return "Use at least 6 characters."
         }
         return nil
     }
 
     private var confirmPasswordError: String? {
-        if showValidation && !viewModel.isConfirmPasswordValid {
+        if showConfirmValidation && !viewModel.isConfirmPasswordValid {
             return "Passwords do not match."
         }
         return nil
     }
 
+    private var currentStepIndex: Int {
+        switch step {
+        case .email: return 1
+        case .password: return 2
+        case .confirm: return 3
+        }
+    }
+
+    private var stepProgress: CGFloat {
+        CGFloat(currentStepIndex) / 3.0
+    }
+
     private func handleBack() {
         if step == .email {
             onBack()
-        } else {
+        } else if step == .password {
             step = .email
-            showValidation = false
+            showPasswordValidation = false
+            showConfirmValidation = false
+        } else {
+            step = .password
+            showConfirmValidation = false
         }
     }
 
     private func handleContinue() {
-        showValidation = true
+        showEmailValidation = true
         guard viewModel.isEmailValid else { return }
         viewModel.clearErrors()
-        showValidation = false
         withAnimation(.spring(response: 0.45, dampingFraction: 0.9)) {
             step = .password
         }
     }
 
+    private func handlePasswordContinue() {
+        showPasswordValidation = true
+        guard viewModel.isPasswordValid else { return }
+        viewModel.clearErrors()
+        withAnimation(.spring(response: 0.45, dampingFraction: 0.9)) {
+            step = .confirm
+        }
+    }
+
     private func handleSignUp() {
-        showValidation = true
+        showConfirmValidation = true
         guard viewModel.canSubmitSignUp else { return }
         session.shouldDeferMainView = true
         Task {
