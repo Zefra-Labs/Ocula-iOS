@@ -19,9 +19,20 @@
                                 <rect key="frame" x="154" y="741" width="85" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loadingSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="Zqe-dc-9zz">
+                                <rect key="frame" x="171.66666666666666" y="413" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="9P9-Vd-PfF"/>
+                                    <constraint firstAttribute="height" constant="50" id="U7w-tk-D4E"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Zqe-dc-9zz" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="bbY-Ks-r4w"/>
+                            <constraint firstItem="Zqe-dc-9zz" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="12" id="f8M-c5-MoT"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -30,6 +41,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="loadingSymbol" width="2048" height="2048"/>
         <image name="zefraLogo" width="1500" height="350"/>
     </resources>
 </document>

@@ -9,13 +9,14 @@ import SwiftUI
 
 struct DebugReportSheet: View {
     enum IssueCategory: String, CaseIterable, Identifiable {
-        case crash = "App Crash"
-        case recording = "Recording"
-        case playback = "Playback"
-        case connectivity = "Connectivity"
+        case crash = "App Crashed"
+        case recording = "Recording Issue"
+        case playback = "Playback Issue"
+        case connectivity = "Connectivity Issue"
         case notifications = "Notifications"
-        case account = "Account"
-        case confusing = "Something is Confusing"
+        case account = "Account Issue"
+        case confusing = "Something is confusing"
+        case website = "Website issue"
         case cosmetic = "Something looks wrong"
         case other = "Other"
         
@@ -30,16 +31,26 @@ struct DebugReportSheet: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 10) {
-                Image(systemName: "bubble.left.and.exclamationmark.bubble.right.fill")
-                    .frame(alignment: .center)
-                    .font(AppTheme.Fonts.regular(36))
-                Text("What Happened?")
-                    .font(AppTheme.Fonts.semibold(30))
-                    .foregroundStyle(AppTheme.Colors.primary)
-            }
-            .padding(.vertical, AppTheme.Spacing.xxl)
             Form {
+                Section {
+                    VStack(spacing: 10) {
+                        Image(systemName: "bubble.left.and.exclamationmark.bubble.right.fill")
+                            .font(AppTheme.Fonts.regular(36))
+                            .tint(.blue)
+                        Text("What Happened?")
+                            .padding(.horizontal, AppTheme.Spacing.md)
+                            .titleStyle()
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text("You can use this space to report bugs and request features. Your feedback helps improve the Ocula app.")
+                            .padding(.horizontal, AppTheme.Spacing.md)
+                            .foregroundStyle(AppTheme.Colors.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, AppTheme.Spacing.lg)
+                    .padding(.bottom, AppTheme.Spacing.lg)
+                }
+                
                 Section {
                     Picker("Issue Type", selection: $issueCategory) {
                         ForEach(IssueCategory.allCases) { category in
@@ -55,15 +66,14 @@ struct DebugReportSheet: View {
                         if descriptionText.isEmpty {
                             Text("Describe what happened...")
                                 .foregroundColor(.secondary)
-                                .padding(.top, 10)
-                                .padding(.horizontal, 6)
                         }
                         
                         TextEditor(text: $descriptionText)
-                            .frame(minHeight: 120)
+                            .multilineTextAlignment(.leading)
+                            .frame(minHeight: 140)
                     }
                 }
-                VStack(spacing: 10) {
+                Section {
                     Button {
                         speechTranscriber.toggleRecording()
                     } label: {
@@ -71,26 +81,29 @@ struct DebugReportSheet: View {
                             speechTranscriber.isRecording ? "Stop Speaking" : "Speak to debug",
                             systemImage: speechTranscriber.isRecording ? "stop.circle.fill" : "mic.fill"
                         )
+                        .frame(maxWidth: .infinity, alignment: .center)
                     }
-                    .buttonStyle(PrimaryButtonStyle())
-                    .tint(AppTheme.Colors.primary)
+                    .buttonStyle(.borderless)
                     .disabled(!speechTranscriber.isAvailable)
-                }
-                .onChange(of: speechTranscriber.transcript) { newValue in
-                    guard speechTranscriber.isRecording else { return }
-                    descriptionText = newValue
-                }
-                .onDisappear {
-                    speechTranscriber.stopTranscribing()
-                }
-                if let errorMessage = speechTranscriber.errorMessage {
-                    Text(errorMessage)
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
+                    
+                    if let errorMessage = speechTranscriber.errorMessage {
+                        Text(errorMessage)
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    }
                 }
             }
+            .multilineTextAlignment(.center)
+            .onDisappear {
+                speechTranscriber.stopTranscribing()
+            }
+            .onChange(of: speechTranscriber.transcript) { newValue in
+                guard speechTranscriber.isRecording else { return }
+                descriptionText = newValue
+            }
             
-            .navigationTitle("Shake To Debug")
+            .navigationTitle("Shake To Report")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -105,4 +118,3 @@ struct DebugReportSheet: View {
         }
     }
 }
-

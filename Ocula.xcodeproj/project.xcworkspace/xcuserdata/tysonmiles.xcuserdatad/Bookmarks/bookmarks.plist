@@ -463,15 +463,15 @@ private extension SettingsView {
 				<key>location-parameters</key>
 				<dict>
 					<key>EndingColumnNumber</key>
-					<string>27</string>
+					<string>5</string>
 					<key>EndingLineNumber</key>
-					<string>222</string>
+					<string>214</string>
 					<key>StartingColumnNumber</key>
-					<string>27</string>
+					<string>5</string>
 					<key>StartingLineNumber</key>
-					<string>222</string>
+					<string>214</string>
 					<key>Timestamp</key>
-					<string>792663492.581484</string>
+					<string>793197453.333226</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -489,13 +489,13 @@ private extension SettingsView {
 				<key>focused</key>
 				<string></string>
 				<key>leading</key>
-				<string>                    .headlineStyle()
-                Spacer()
-                // ADD HERE</string>
+				<string>        }
+        .buttonStyle(.plain)
+    }</string>
 				<key>trailing</key>
 				<string>
-            }
-
+    var breakdownSection: some View {
+        VStack(alignment: .leading, spacing: AppTheme.Spacing.sm) {
 </string>
 			</dict>
 			<key>type</key>
@@ -609,6 +609,179 @@ private extension SettingsView {
 				</dict>
 				<key>type</key>
 				<string>DVTDocumentLocation</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Ocula/Core/User Management/AppUser.swift</string>
+					</dict>
+				</dict>
+				<key>type</key>
+				<string>DVTDocumentLocation</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>0</string>
+					<key>EndingLineNumber</key>
+					<string>86</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>85</string>
+					<key>Timestamp</key>
+					<string>793198192.037423</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Ocula/Features/Home/HomeView.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>                }
+</string>
+				<key>leading</key>
+				<string>                            .foregroundColor(.red)
+                    }
+</string>
+				<key>trailing</key>
+				<string>            }
+            Spacer()
+        }
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Ocula/Features/Home/HomeView.swift</string>
+					</dict>
+				</dict>
+				<key>type</key>
+				<string>DVTDocumentLocation</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>0</string>
+					<key>EndingLineNumber</key>
+					<string>58</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>57</string>
+					<key>Timestamp</key>
+					<string>793198192.037413</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Ocula/Features/Home/HomeView.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>                    // add device action
+</string>
+				<key>leading</key>
+				<string>                Divider()
+                Button {
+</string>
+				<key>trailing</key>
+				<string>                } label: {
+                    Label {
+                        Text("Add Device")
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>0</string>
+					<key>EndingLineNumber</key>
+					<string>91</string>
+					<key>StartingColumnNumber</key>
+					<string>14</string>
+					<key>StartingLineNumber</key>
+					<string>90</string>
+					<key>Timestamp</key>
+					<string>793228605.832947</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Ocula/Features/Profile/settings/SettingsAppInformationView.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>
+</string>
+				<key>leading</key>
+				<string>    }
+    static var buildType: String {
+        "Beta"</string>
+				<key>trailing</key>
+				<string>    }
+
+    static var bundleId: String? {
+</string>
 			</dict>
 			<key>type</key>
 			<string>bookmark</string>

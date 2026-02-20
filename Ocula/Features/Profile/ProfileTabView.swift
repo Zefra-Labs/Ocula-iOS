@@ -213,7 +213,6 @@ private extension ProfileView {
         }
         .buttonStyle(.plain)
     }
-
     var breakdownSection: some View {
         VStack(alignment: .leading, spacing: AppTheme.Spacing.sm) {
             HStack() {
@@ -241,7 +240,6 @@ private extension ProfileView {
             }
         }
     }
-
     var achievementsSection: some View {
         VStack(alignment: .leading, spacing: AppTheme.Spacing.sm) {
             HStack {

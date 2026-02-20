@@ -46,9 +46,10 @@ struct HomeView: View {
 private extension HomeView {
 
     var topNavBar: some View {
-        HStack {
+        HStack() {
             Menu {
                 Text("Your Devices")
+                    .bold()
                 Divider()
                 Button("Ocula One") { selectedDevice = "Ocula One" }
                 Button("Ocula Mini") { selectedDevice = "Ocula Mini" }
@@ -63,18 +64,30 @@ private extension HomeView {
                     }
                 }
             } label: {
-                HStack(spacing: 6) {
-                    Text(selectedDevice)
-                        .titleStyle()
-
-                    Image(systemName: "chevron.down")
-                        .bodyStyle()
-                        .foregroundColor(AppTheme.Colors.secondary)
+                VStack(alignment: .leading, spacing: AppTheme.Spacing.xs) {
+                    HStack(spacing: 6) {
+                        Text(selectedDevice)
+                            .titleStyle()
+                        
+                        Image(systemName: "chevron.down")
+                            .bodyStyle()
+                            .foregroundColor(AppTheme.Colors.secondary)
+                    }
+                    HStack(spacing: 4) {
+                        Text("Updating")
+                            .captionStyle()
+                            .bold(true)
+                        
+                        Image(systemName: "arrow.trianglehead.2.counterclockwise")
+                            .captionStyle()
+                            .bold(true)
+                            .foregroundColor(.red)
+                    }
                 }
             }
-
             Spacer()
         }
+        
         .padding(.horizontal, AppTheme.Spacing.md)
         .padding(.top, AppTheme.Spacing.xl)
         .padding(.bottom, AppTheme.Spacing.sm)
@@ -101,7 +114,7 @@ private extension HomeView {
             // 3D Model
             RealityView { content in
                 if let entity = try? await Entity(named: "OculaDevice") {
-                    entity.scale = SIMD3(repeating: 0.6)
+                    entity.scale = SIMD3(repeating: 1)
                     entity.position = [0, 0, 0]
                     content.add(entity)
                 }
@@ -118,50 +131,28 @@ private extension HomeView {
     var actionsSection: some View {
         ScrollView {
             VStack(spacing: 12) {
-                
+                HStack(spacing: 12) {
+                    // ADD HERE
+                }
+                actionRow(
+                    icon: "waveform.path.ecg.text.page.fill",
+                    title: "Health & Status",
+                    subtitle: "View health and status for this device"
+                )
                 actionRow(
                     icon: "map.fill",
-                    title: "Location & Status",
-                    subtitle: "View current location and stats"
+                    title: "Location",
+                    subtitle: "View current location on map"
                 )
                 actionRow(
                     icon: "video.fill",
                     title: "Live View",
                     subtitle: "View cameras in real time"
                 )
-                
-                actionRow(
-                    icon: "folder.fill",
-                    title: "Clips",
-                    subtitle: "Browse saved footage for this device"
-                )
-                
-                actionRow(
-                    icon: "map.fill",
-                    title: "Trips",
-                    subtitle: "View past drives"
-                )
-                
                 actionRow(
                     icon: "gearshape.fill",
-                    title: "Device Settings",
+                    title: "Settings",
                     subtitle: "Manage settings for this device"
-                )
-                actionRow(
-                    icon: "gearshape.fill",
-                    title: "Signout",
-                    subtitle: "Manage settings for this device",
-                    action: {
-                        session.signOut()
-                    }
-                )
-                actionRow(
-                    icon: "gearshape.fill",
-                    title: "Signout",
-                    subtitle: "Manage settings for this device",
-                    action: {
-                        session.signOut()
-                    }
                 )
                 Button("Show Alert Sheet") { show = true }
                     .oculaAlertSheet(

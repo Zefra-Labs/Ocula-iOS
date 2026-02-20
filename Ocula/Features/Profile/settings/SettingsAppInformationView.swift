@@ -10,13 +10,19 @@ import Foundation
 
 struct SettingsAppInformationView: View {
     @State private var updateStatus: AppUpdateStatus = .checking
+    @State private var buildType: String = "Beta"
 
     var body: some View {
         SettingsScaffold(title: "App Information") {
             SettingsList {
+                Section() {
+                    Text("You are using a BETA version of the Ocula App")
+                    Text("To request a feature or report a bug, simply shake your device, or navigate to the Profile tab > Settings > Support")
+                }
                 Section(header: SettingsSectionHeader(title: "Build")) {
                     AppInfoRow(title: "Version", value: AppInfo.version)
                     AppInfoRow(title: "Build", value: AppInfo.build)
+                    AppInfoRow(title: "Type", value: AppInfo.buildType)
                 }
 
                 Section(header: SettingsSectionHeader(title: "Updates")) {
@@ -80,6 +86,9 @@ private enum AppInfo {
 
     static var build: String {
         Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
+    }
+    static var buildType: String {
+        "Beta"
     }
 
     static var bundleId: String? {
